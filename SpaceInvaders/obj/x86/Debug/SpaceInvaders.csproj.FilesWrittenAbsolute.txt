@@ -1,0 +1,7 @@
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/obj/x86/Debug/.NETFramework,Version=v4.0,Profile=Client.AssemblyAttribute.cs
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/obj/x86/Debug/SpaceInvaders.GameForm.resources
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/obj/x86/Debug/SpaceInvaders.Properties.Resources.resources
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/bin/Debug/SpaceInvaders.pdb
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/bin/Debug/SpaceInvaders.exe
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/obj/x86/Debug/SpaceInvaders.exe
+/home/delevacw/Projects/RiderProjects/Balle_ecs/SpaceInvaders/obj/x86/Debug/SpaceInvaders.pdb
