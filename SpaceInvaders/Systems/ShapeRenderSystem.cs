@@ -10,7 +10,7 @@ namespace SpaceInvaders
     {
         public void Update()
         {
-            throw new System.NotImplementedException();
+            
         }
  
         public void Update(Engine gameInstance, Graphics graphics)

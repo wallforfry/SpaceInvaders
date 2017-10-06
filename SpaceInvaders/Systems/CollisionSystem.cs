@@ -15,139 +15,92 @@ namespace SpaceInvaders
         public void Update(Engine gameInstance, Graphics graphics)
         {
             foreach (var entity in gameInstance.getEntity())
-            {
-                RenderComponent renderComponent = null;
-                PositionComponent positionComponent = null;
-                LifeComponent lifeComponent = null;
-                PhysicsComponent physicsComponent = null;     
+            {     
+                RenderComponent renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
+                PositionComponent positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
+                LifeComponent lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
+                PhysicsComponent physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));             
 
-                renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
-                positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
-                physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));             
-
-                if (renderComponent != null && positionComponent != null)
+                if (renderComponent != null && positionComponent != null && lifeComponent != null)
                 {
-                    if (lifeComponent != null)
+                    if (lifeComponent.IsAlive)
                     {
-                        if (lifeComponent.IsAlive)
+                        foreach (var entity2 in gameInstance.getEntity())
                         {
-                            foreach (var entity2 in gameInstance.getEntity())
+                            if (!entity.Equals(entity2))
                             {
-                                RenderComponent renderComponent2 = null;
-                                PositionComponent positionComponent2 = null;
-                                LifeComponent lifeComponent2 = null;
-                                PhysicsComponent physicsComponent2 = null;
-
-                                if (!entity.Equals(entity2))
-                                {
-                                    renderComponent2 = (RenderComponent) entity2.GetComponent(typeof(RenderComponent));
-                                    positionComponent2 = (PositionComponent) entity2.GetComponent(typeof(PositionComponent));
-                                    lifeComponent2 = (LifeComponent) entity2.GetComponent(typeof(LifeComponent));
-                                    physicsComponent2 = (PhysicsComponent) entity2.GetComponent(typeof(PhysicsComponent));
-                                    
-                                    if (renderComponent2 != null && positionComponent2 != null)
+                                RenderComponent renderComponent2 = (RenderComponent) entity2.GetComponent(typeof(RenderComponent));
+                                PositionComponent positionComponent2 = (PositionComponent) entity2.GetComponent(typeof(PositionComponent));
+                                LifeComponent lifeComponent2 = (LifeComponent) entity2.GetComponent(typeof(LifeComponent));
+                                PhysicsComponent physicsComponent2 = (PhysicsComponent) entity2.GetComponent(typeof(PhysicsComponent));
+                                
+                                if (renderComponent2 != null && positionComponent2 != null && lifeComponent2 != null)
+                                {                                    
+                                    if (lifeComponent2.IsAlive)
                                     {
-                                        if (lifeComponent2 != null)
+                                        //TODO: FAIRE ICI LE TEST ENTRE ENTITY & ENTITY2
+                                        if (positionComponent2.X >= positionComponent.X && positionComponent2.X <= positionComponent.X + renderComponent.Image.Width)
                                         {
-                                            if (lifeComponent2.IsAlive)
-                                            {
-                                                //TODO: FAIRE ICI LE TEST ENTRE ENTITY & ENTITY2
-                                                if (positionComponent2.X >= positionComponent.X &&
-                                                    positionComponent2.X <=
-                                                    positionComponent.X + renderComponent.Image.Width)
-                                                {
-                                                    if (positionComponent2.Y >= positionComponent.Y &&
-                                                         positionComponent2.Y <=
-                                                         positionComponent.Y + renderComponent.Image.Height)
-                                                     {
-
-
-                                                         if (physicsComponent.TypeOfObject !=
-                                                             physicsComponent2.TypeOfObject)
-                                                         {
-                                                           
-                                                             //TODO: ICI FAIRE LE TRAITEMENT POUR LA COLLISION PRÉCISE
-
-                                                             for (double i = positionComponent.X;
-                                                                 i < positionComponent.X + renderComponent.Image.Width;
-                                                                 i++)
-                                                             {                                                                 
-                                                                 for (double i2 = positionComponent2.X; i2 < positionComponent2.X +
-                                                                                 renderComponent2.Image.Width; i2++)
-                                                                     {
-                                                                         if (i == i2)
-                                                                         {
-                                                                           //Collision sur X 
-                                                                                 
-                                                                             for (double j = positionComponent.Y;
-                                                                                 j < positionComponent.Y + renderComponent.Image.Height;
-                                                                                 j++)
-                                                                             {                                                                 
-                                                                                 for (double j2 = positionComponent2.Y; j2 < positionComponent2.Y +
-                                                                                                                        renderComponent2.Image.Height; j2++)
-                                                                                 {
-                                                                                     if (j == j2)
-                                                                                     {
-                                                                                         //Collision sur Y
-                                                                                         
-                                                                                         if (lifeComponent.IsAlive && lifeComponent2.IsAlive)
-                                                                                         {
-                                                                                             //TODO: Gérer la collision par couleur de bit
-                                                                                             Color color =
-                                                                                                 renderComponent.Image
-                                                                                                     .GetPixel((int) (i - positionComponent.X), (int) (j - positionComponent.Y));
-                                                                                             Color color2 =
-                                                                                                 renderComponent2.Image
-                                                                                                     .GetPixel((int) (i2 - positionComponent2.X), (int) (j2 - positionComponent2.Y));
-
-                                                                                             if (color == color2)
-                                                                                             {
-                                                                                                 Color delete = Color.Red;
-                                                                                                 
-                                                                                                 lifeComponent.Lives -=
-                                                                                                     1;
-                                                                                                 lifeComponent2.Lives -=
-                                                                                                     1;
-
-                                                                                                 DeletePixel(renderComponent.Image, (int)(i - positionComponent.X), (int)( j - positionComponent.Y), delete);
-                                                                                                 DeletePixel(renderComponent2.Image, (int)(i2 - positionComponent2.X), (int)( j2 - positionComponent2.Y), delete);
-                                                                                             
-                                                                                                 debugDisplayLifes(entity, entity2);
-                                                                                             }
-                                                                                         }
-                                                                                     }
-                                                                                 }
-                                                                             }
-                                                                         }
-                                                                     }
-                                                             }
-                                                         }
-                                                    }
-                                                }
+                                            if (positionComponent2.Y >= positionComponent.Y && positionComponent2.Y <= positionComponent.Y + renderComponent.Image.Height)
+                                             {
+                                                 if (physicsComponent.TypeOfObject != physicsComponent2.TypeOfObject)
+                                                 {                                                   
+                                                     //TODO: ICI FAIRE LE TRAITEMENT POUR LA COLLISION PRÉCISE
+                                                     TestCollision(entity, entity2);                                                             
+                                                 }
                                             }
                                         }
-                                    }
+                                    }                                    
                                 }
                             }
                         }
-                    }
+                    }                    
                 }
             }        
         }
 
-        void DeleteWhenCollision(Entity e1, Entity e2)
+
+        void TestCollision(Entity e1, Entity e2)
         {
             RenderComponent renderComponent = (RenderComponent) e1.GetComponent(typeof(RenderComponent));
             RenderComponent renderComponent2 = (RenderComponent) e2.GetComponent(typeof(RenderComponent));
             PositionComponent positionComponent = (PositionComponent) e1.GetComponent(typeof(PositionComponent));
             PositionComponent positionComponent2 = (PositionComponent) e2.GetComponent(typeof(PositionComponent));
-            
-            
-            
-            
 
-        }
+            for (int x = 0; x < renderComponent.Image.Width; x++)
+            {
+                for (int y = 0; y < renderComponent.Image.Height; y++)
+                {
+                    Color color = renderComponent.Image.GetPixel(x, y);
+                    
+                    if(1 == 1)
+                    {
+                        //TODO : Récupérer la position relative de l'autre pixel
+                        int pX = (int) (positionComponent.X + x);
+                        int pY = (int) (positionComponent.Y + y);
+
+                        if (positionComponent2.X < pX && pX < positionComponent2.X + renderComponent2.Image.Width)
+                        {
+                            if (positionComponent2.Y < pY && pY < positionComponent2.Y + renderComponent2.Image.Height)
+                            {
+                                int pX2 = (int) ((x + positionComponent2.X + (positionComponent.X - positionComponent2.X))- positionComponent2.X);
+                                int pY2 = (int) ((y + positionComponent2.Y + (positionComponent.Y - positionComponent2.Y))- positionComponent2.Y);
+
+                                Color color2 = renderComponent2.Image.GetPixel(pX2, pY2);
+                                if (color == color2)
+                                {
+                                    DeletePixel(renderComponent.Image, x, y, Color.White);
+                                    //Ne pas utiliser sinon le missile disparait
+                                    //DeletePixel(renderComponent2.Image, pX2, pY2, Color.Red); 
+                                    
+                                }
+
+                            }
+                        }             
+                    }
+                }
+            }
+        }     
         
         void DeletePixel(Bitmap image, int X, int Y, Color color)
         {

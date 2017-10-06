@@ -73,7 +73,7 @@ namespace SpaceInvaders
                             ((PositionComponent) fireComponent.Entity.GetComponents()[typeof(PositionComponent)]
                             );
 
-                            missileLifeComponent.Lives = 1;
+                            missileLifeComponent.Lives = 5;
                             //missilePositionComponent.Position = new Vecteur2D(positionComponent.Position);
                             missilePositionComponent.X = positionComponent.X + renderComponent.Image.Width / 2;
                             missilePositionComponent.Y = positionComponent.Y;
@@ -88,7 +88,7 @@ namespace SpaceInvaders
 
         public void Update()
         {
-            throw new System.NotImplementedException();
+            
         }
     }
 }

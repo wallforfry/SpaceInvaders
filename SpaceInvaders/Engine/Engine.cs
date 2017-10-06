@@ -72,7 +72,7 @@ namespace SpaceInvaders
             c1.Lives = 0;
             
             PhysicsComponent c2 = new PhysicsComponent();
-            c2.Vector = new Vecteur2D(0, -0.5);
+            c2.Vector = new Vecteur2D(0, -2);
             c2.TypeOfObject = TypeOfObject.MOVABLE;
            
             PositionComponent c3 = new PositionComponent();
