@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SpaceInvaders
@@ -17,7 +18,7 @@ namespace SpaceInvaders
                 KeyboardHelper.ReleaseKey(Keys.Space);
             }
                      
-            foreach (var entity in gameEngine.getEntity())
+            foreach (var entity in gameEngine.getEntity().ToList())
             {
                 PhysicsComponent physicsComponent = null;
                 FireComponent fireComponent = null;
@@ -59,12 +60,14 @@ namespace SpaceInvaders
                     {
                         
                         //TODO: Si on fait un newMissile ici, la collection est modifiée du coup le foreach plante. Il faut essayer d'inverser le test d'appui sur Entrer et le foreach ou un truc du genre
-                        /*if (fireComponent.Entity == null)
+                        if (!((LifeComponent) fireComponent.Entity.GetComponent(typeof(LifeComponent))).IsAlive)
                         {
-                            fireComponent.Entity = gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width/2, positionComponent.Y);
-                        }*/
+                            fireComponent.Entity =
+                                gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width / 2,
+                                    positionComponent.Y, 1);
+                        }
                         
-                        LifeComponent missileLifeComponent = ((LifeComponent)
+                        /*LifeComponent missileLifeComponent = ((LifeComponent)
                                 fireComponent.Entity.GetComponents()[typeof(LifeComponent)]);
                         
                         if (!missileLifeComponent.IsAlive)
@@ -73,11 +76,11 @@ namespace SpaceInvaders
                             ((PositionComponent) fireComponent.Entity.GetComponents()[typeof(PositionComponent)]
                             );
 
-                            missileLifeComponent.Lives = 5;
+                            missileLifeComponent.Lives = 1;
                             //missilePositionComponent.Position = new Vecteur2D(positionComponent.Position);
                             missilePositionComponent.X = positionComponent.X + renderComponent.Image.Width / 2;
                             missilePositionComponent.Y = positionComponent.Y;
-                        }
+                        }*/
 
                         KeyboardHelper.ReleaseKey(Keys.Enter);
                     }

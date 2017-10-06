@@ -66,10 +66,10 @@ namespace SpaceInvaders
             
         }
 
-        public Entity newMissile(double x, double y)
+        public Entity newMissile(double x, double y, int lives)
         {
             LifeComponent c1 = new LifeComponent();    
-            c1.Lives = 0;
+            c1.Lives = lives;
             
             PhysicsComponent c2 = new PhysicsComponent();
             c2.Vector = new Vecteur2D(0, -2);
@@ -100,7 +100,7 @@ namespace SpaceInvaders
             c3.TypeOfObject = TypeOfObject.CONTROLABLE;
 
             FireComponent c4 = new FireComponent();
-            c4.Entity = newMissile(c2.X + c1.Image.Width/2, c2.Y);
+            c4.Entity = newMissile(c2.X + c1.Image.Width/2, c2.Y, 0);
 
             Entity test = new Entity(c1, c2, c3, c4);
             //Entity test = new Entity(c1, c2, c3);
@@ -121,7 +121,7 @@ namespace SpaceInvaders
             c3.TypeOfObject = TypeOfObject.STATIC;
             
             LifeComponent c4 = new LifeComponent();
-            c4.Lives = 10;
+            c4.Lives = c1.NumberOfPixel;                       
             
             Entity test = new Entity(c1, c2, c3, c4);
             entityList.Add(test);
@@ -142,7 +142,7 @@ namespace SpaceInvaders
                 c3.TypeOfObject = TypeOfObject.AI;
                 
                 LifeComponent c4 = new LifeComponent();
-                c4.Lives = 1;
+                c4.Lives = 3;
 
                 /*EnemyBlockComponent c4 = new EnemyBlockComponent();
                 c4.NumberOfEnemy = number;

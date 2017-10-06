@@ -44,7 +44,7 @@ namespace SpaceInvaders
                                             if (positionComponent2.Y >= positionComponent.Y && positionComponent2.Y <= positionComponent.Y + renderComponent.Image.Height)
                                              {
                                                  if (physicsComponent.TypeOfObject != physicsComponent2.TypeOfObject)
-                                                 {                                                   
+                                                 {                                                    
                                                      //TODO: ICI FAIRE LE TRAITEMENT POUR LA COLLISION PRÉCISE
                                                      TestCollision(entity, entity2);                                                             
                                                  }
@@ -63,7 +63,7 @@ namespace SpaceInvaders
         void TestCollision(Entity e1, Entity e2)
         {
             RenderComponent renderComponent = (RenderComponent) e1.GetComponent(typeof(RenderComponent));
-            RenderComponent renderComponent2 = (RenderComponent) e2.GetComponent(typeof(RenderComponent));
+            RenderComponent renderComponent2 = (RenderComponent) e2.GetComponent(typeof(RenderComponent));           
             PositionComponent positionComponent = (PositionComponent) e1.GetComponent(typeof(PositionComponent));
             PositionComponent positionComponent2 = (PositionComponent) e2.GetComponent(typeof(PositionComponent));
 
@@ -90,6 +90,7 @@ namespace SpaceInvaders
                                 if (color == color2)
                                 {
                                     DeletePixel(renderComponent.Image, x, y, Color.White);
+                                    RemoveLife(e1, e2);
                                     //Ne pas utiliser sinon le missile disparait
                                     //DeletePixel(renderComponent2.Image, pX2, pY2, Color.Red); 
                                     
@@ -100,8 +101,15 @@ namespace SpaceInvaders
                     }
                 }
             }
-        }     
-        
+        }
+
+        void RemoveLife(Entity e1, Entity e2)
+        {
+            LifeComponent lifeComponent = (LifeComponent) e1.GetComponent(typeof(LifeComponent));
+            LifeComponent lifeComponent2 = (LifeComponent) e2.GetComponent(typeof(LifeComponent));            
+            lifeComponent.Lives -= 1;
+            lifeComponent2.Lives -= 1;
+        }
         void DeletePixel(Bitmap image, int X, int Y, Color color)
         {
             image.SetPixel(X, Y, color);
