@@ -20,15 +20,11 @@ namespace SpaceInvaders
                      
             foreach (var entity in gameEngine.getEntity().ToList())
             {
-                PhysicsComponent physicsComponent = null;
-                FireComponent fireComponent = null;
-                PositionComponent positionComponent = null;
-                RenderComponent renderComponent = null;
                 
-                physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));
-                fireComponent = (FireComponent) entity.GetComponent(typeof(FireComponent));
-                positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
+                PhysicsComponent physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));
+                FireComponent fireComponent = (FireComponent) entity.GetComponent(typeof(FireComponent));
+                PositionComponent positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
+                RenderComponent renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
                          
                 if (physicsComponent != null)
                 {
@@ -64,7 +60,10 @@ namespace SpaceInvaders
                         {
                             fireComponent.Entity =
                                 gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width / 2,
-                                    positionComponent.Y, 1);
+                                       positionComponent.Y, 1);
+                            /*fireComponent.Entity =
+                                gameEngine.newEnemy(positionComponent.X,
+                                    positionComponent.Y);*/
                         }
                         
                         /*LifeComponent missileLifeComponent = ((LifeComponent)

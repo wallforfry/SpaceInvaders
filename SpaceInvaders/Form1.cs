@@ -59,7 +59,7 @@ namespace SpaceInvaders
         {
             BufferedGraphics bg = BufferedGraphicsManager.Current.Allocate(e.Graphics, e.ClipRectangle);
             Graphics g = bg.Graphics;
-            g.Clear(Color.White);
+            g.Clear(Color.Red);
 
             graphics = g;
             

@@ -21,33 +21,39 @@ namespace SpaceInvaders
                 LifeComponent lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
                 PhysicsComponent physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));             
 
+                //Si possède les bons composants
                 if (renderComponent != null && positionComponent != null && lifeComponent != null)
                 {
+                    //Si e1 est en vie
                     if (lifeComponent.IsAlive)
                     {
+                        //On cherche toutes les autres entitées
                         foreach (var entity2 in gameInstance.getEntity())
                         {
+                            //Si on ne test pas e1 != e2
                             if (!entity.Equals(entity2))
-                            {
+                            {                                
                                 RenderComponent renderComponent2 = (RenderComponent) entity2.GetComponent(typeof(RenderComponent));
                                 PositionComponent positionComponent2 = (PositionComponent) entity2.GetComponent(typeof(PositionComponent));
                                 LifeComponent lifeComponent2 = (LifeComponent) entity2.GetComponent(typeof(LifeComponent));
                                 PhysicsComponent physicsComponent2 = (PhysicsComponent) entity2.GetComponent(typeof(PhysicsComponent));
-                                
+                                 
+                                //Si e2 possède les bons composants
                                 if (renderComponent2 != null && positionComponent2 != null && lifeComponent2 != null)
-                                {                                    
+                                {                                  
+                                    //Si e2 est en vie
                                     if (lifeComponent2.IsAlive)
-                                    {
-                                        //TODO: FAIRE ICI LE TEST ENTRE ENTITY & ENTITY2
+                                    {                                      
+                                        //On test la collision des rectangles
                                         if (positionComponent2.X >= positionComponent.X && positionComponent2.X <= positionComponent.X + renderComponent.Image.Width)
                                         {
                                             if (positionComponent2.Y >= positionComponent.Y && positionComponent2.Y <= positionComponent.Y + renderComponent.Image.Height)
                                              {
-                                                 if (physicsComponent.TypeOfObject != physicsComponent2.TypeOfObject)
-                                                 {                                                    
-                                                     //TODO: ICI FAIRE LE TRAITEMENT POUR LA COLLISION PRÉCISE
+                                                 /*if (physicsComponent.TypeOfObject != physicsComponent2.TypeOfObject)
+                                                 {//*/                                                    
+                                                     //On alors une collision pixel à pixel
                                                      TestCollision(entity, entity2);                                                             
-                                                 }
+                                                 //}
                                             }
                                         }
                                     }                                    
@@ -67,37 +73,40 @@ namespace SpaceInvaders
             PositionComponent positionComponent = (PositionComponent) e1.GetComponent(typeof(PositionComponent));
             PositionComponent positionComponent2 = (PositionComponent) e2.GetComponent(typeof(PositionComponent));
 
-            for (int x = 0; x < renderComponent.Image.Width; x++)
+            for (int y = 0; y < renderComponent.Image.Height; y++)           
             {
-                for (int y = 0; y < renderComponent.Image.Height; y++)
+                for (int x = 0; x < renderComponent.Image.Width; x++)
                 {
                     Color color = renderComponent.Image.GetPixel(x, y);
                     
-                    if(1 == 1)
+                    //Si pas pixel pas mort
+                    if(color.A != 0)
                     {
                         //TODO : Récupérer la position relative de l'autre pixel
                         int pX = (int) (positionComponent.X + x);
                         int pY = (int) (positionComponent.Y + y);
 
-                        if (positionComponent2.X < pX && pX < positionComponent2.X + renderComponent2.Image.Width)
+                        if (positionComponent2.X <= pX && pX < positionComponent2.X + renderComponent2.Image.Width)
                         {
-                            if (positionComponent2.Y < pY && pY < positionComponent2.Y + renderComponent2.Image.Height)
+                            if (positionComponent2.Y <= pY && pY < positionComponent2.Y + renderComponent2.Image.Height)
                             {
-                                int pX2 = (int) ((x + positionComponent2.X + (positionComponent.X - positionComponent2.X))- positionComponent2.X);
-                                int pY2 = (int) ((y + positionComponent2.Y + (positionComponent.Y - positionComponent2.Y))- positionComponent2.Y);
+                                //int pX2 = (int) ((x + positionComponent2.X + (positionComponent.X - positionComponent2.X))- positionComponent2.X);
+                                //int pY2 = (int) ((y + positionComponent2.Y + (positionComponent.Y - positionComponent2.Y))- positionComponent2.Y);
+                                int pX2 = (int) (positionComponent.X - positionComponent2.X + x);
+                                int pY2 = (int) (positionComponent.Y - positionComponent2.Y + y);
 
                                 Color color2 = renderComponent2.Image.GetPixel(pX2, pY2);
-                                if (color == color2)
+                                if (color2.A != 0)
                                 {
-                                    DeletePixel(renderComponent.Image, x, y, Color.White);
-                                    RemoveLife(e1, e2);
-                                    //Ne pas utiliser sinon le missile disparait
-                                    //DeletePixel(renderComponent2.Image, pX2, pY2, Color.Red); 
-                                    
+                                    //Color test = Color.FromArgb(0, 255, 255, 255);
+                                    Color test = Color.Transparent;
+                                    DeletePixel(renderComponent.Image, x, y, test);
+                                    DeletePixel(renderComponent2.Image, pX2, pY2, test);
+                                    //RemoveLife(e1, e2);
                                 }
 
                             }
-                        }             
+                        } 
                     }
                 }
             }

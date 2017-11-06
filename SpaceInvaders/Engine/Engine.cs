@@ -16,8 +16,7 @@ namespace SpaceInvaders
         public static HashSet<Keys> keyPressed = new HashSet<Keys>();
         
         public GameState CurrentGameState { get; set; }
-        
-        
+
         public Engine(Size gameSize)
         {
             GameSize = gameSize;          
@@ -30,7 +29,7 @@ namespace SpaceInvaders
             newBunker(gameSize.Width / 2 + 200);
 
           
-            newBlockEnemy(5);
+            newBlockEnemy(1);
             //newBlockEnemy(5);       
             
 
@@ -129,13 +128,13 @@ namespace SpaceInvaders
 
         public void newBlockEnemy(int number)
         {
-            for (int i = 1; i < number; i++)
+            for (int i = 1; i <= number; i++)
             {
                 RenderComponent c1 = new RenderComponent();
                 c1.Image = SpaceInvaders.Properties.Resources.ship7;
 
                 PositionComponent c2 = new PositionComponent();
-                c2.Position = new Vecteur2D(200 + i * 50, 200);
+                c2.Position = new Vecteur2D(200 + i * 50, 400);
 
                 PhysicsComponent c3 = new PhysicsComponent();
                 c3.Vector = new Vecteur2D(1, 0);
@@ -152,6 +151,27 @@ namespace SpaceInvaders
                 Entity entity = new Entity(c1, c2, c3, c4);
                 entityList.Add(entity);
             }
+        }
+
+        public Entity newEnemy(double x, double y)
+        {
+            LifeComponent c1 = new LifeComponent();    
+            c1.Lives = 1;
+            
+            PhysicsComponent c2 = new PhysicsComponent();
+            c2.Vector = new Vecteur2D(0, -0.5);
+            c2.TypeOfObject = TypeOfObject.MOVABLE;
+           
+            PositionComponent c3 = new PositionComponent();
+            c3.Position = new Vecteur2D(x, y);
+            
+            RenderComponent c4 = new RenderComponent();
+            c4.Image = SpaceInvaders.Properties.Resources.ship8;
+            
+            Entity missile = new Entity(c1, c2, c3, c4);
+            entityList.Add(missile);
+
+            return missile;
         }
         
         public void newBlockEnemy2(int i)
@@ -171,7 +191,7 @@ namespace SpaceInvaders
         }
         
         public void Draw(Graphics graphics)
-        {
+        {          
             if (CurrentGameState == GameState.PLAY)
             {
                 foreach (var system in systemsList)

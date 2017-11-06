@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace SpaceInvaders
@@ -21,6 +22,24 @@ namespace SpaceInvaders
                 }
                 
                 KeyboardHelper.ReleaseKey(Keys.P);
+            }
+            
+            EntityGarbageCollector(gameEngine);
+        }
+
+        private void EntityGarbageCollector(Engine gameEngine)
+        {
+            foreach (var entity in gameEngine.getEntity().ToList())
+            {
+                LifeComponent lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
+                if (lifeComponent != null)
+                {
+                    if (!lifeComponent.IsAlive)
+                    {
+                        gameEngine.getEntity().Remove(entity);
+                    }
+                    
+                }
             }
         }
 
