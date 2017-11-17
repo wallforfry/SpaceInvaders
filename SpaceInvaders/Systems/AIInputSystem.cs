@@ -36,17 +36,23 @@ namespace SpaceInvaders
 
                         if (enemyBlockComponent != null && renderComponent != null)
                         {
-                            if (positionComponent.X >= gameEngine.GameSize.Width - (renderComponent.Image.Width *
+                            double x = enemyBlockComponent.Position.X;
+                            //Debug.WriteLine(x);
+                            //double x = (positionComponent.X - (50 * (enemyBlockComponent.PositionInLine - 1)) - (renderComponent.Image.Width * (enemyBlockComponent.PositionInLine - 1)));
+                            /*if (positionComponent.X >= gameEngine.GameSize.Width - (renderComponent.Image.Width *
                                                        (enemyBlockComponent.NumberOfEnemy -
                                                         enemyBlockComponent.PositionInLine)))
+                            {*/  
+                            if (x <= 0)
                             {
-                                physicsComponent.SpeedX = -1;
-                                //positionComponent.Y += 10;
+                                physicsComponent.SpeedX = -physicsComponent.SpeedX;
+                                positionComponent.Y += physicsComponent.SpeedY;
                             }
-                            else if (positionComponent.X <= renderComponent.Image.Width)
+                            //else if (positionComponent.X <= renderComponent.Image.Width)
+                            else if (x + enemyBlockComponent.Size.X >= limitX)
                             {
-                                physicsComponent.SpeedX = 1;
-                                //positionComponent.Y += 10;
+                                physicsComponent.SpeedX = -physicsComponent.SpeedX;
+                                positionComponent.Y += physicsComponent.SpeedY;
                             }
                         }
 
@@ -55,12 +61,12 @@ namespace SpaceInvaders
                             if (positionComponent.X >= limitX - 50)
                             {
                                 physicsComponent.SpeedX = -1;
-                                positionComponent.Y += 10;
+                                positionComponent.Y += physicsComponent.SpeedY;
                             }
                             else if (positionComponent.X <= 10)
                             {
                                 physicsComponent.SpeedX = 1;
-                                positionComponent.Y += 10;
+                                positionComponent.Y += physicsComponent.SpeedY;
                             }
                         }                       
                     }

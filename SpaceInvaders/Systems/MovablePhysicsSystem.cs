@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms.VisualStyles;
 
 namespace SpaceInvaders
@@ -30,20 +31,42 @@ namespace SpaceInvaders
                 shapeComponent = (ShapeComponent) entity.GetComponent(typeof(ShapeComponent));
                 lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
                 enemyBlockComponent = (EnemyBlockComponent) entity.GetComponent(typeof(EnemyBlockComponent));
-           
 
-                if (renderComponent != null && positionComponent != null && physicsComponent != null)
+
+                if (renderComponent != null && positionComponent != null && physicsComponent != null && enemyBlockComponent != null)
+                {                 
+                    if (enemyBlockComponent.Position.X >= 0 &&
+                        enemyBlockComponent.Position.X + enemyBlockComponent.Size.X <= gameEngine.GameSize.Width)
+                    {
+                        positionComponent.X += physicsComponent.SpeedX;
+                        enemyBlockComponent.Position.X += physicsComponent.SpeedX;            
+                    }
+                    if (enemyBlockComponent.Position.Y >= 0 &&
+                        enemyBlockComponent.Position.Y < gameEngine.GameSize.Height - renderComponent.Image.Height)
+                    {                      
+                        //positionComponent.Y += physicsComponent.SpeedY;
+                        //enemyBlockComponent.Position.Y += physicsComponent.SpeedY;                        
+                    }
+                    if (lifeComponent != null)
+                    {
+                        if (positionComponent.Y < 0)
+                        {
+                            lifeComponent.Lives = 0;
+                        }
+                    }
+                    
+                }
+                else if (renderComponent != null && positionComponent != null && physicsComponent != null)
                 {                 
                     if (positionComponent.X >= 0 &&
                         positionComponent.X < gameEngine.GameSize.Width - renderComponent.Image.Width)
                     {
-                        positionComponent.X +=
-                            physicsComponent.SpeedX;
+                        positionComponent.X += physicsComponent.SpeedX;                                                                       
                     }
                     if (positionComponent.Y >= 0 &&
                         positionComponent.Y < gameEngine.GameSize.Height - renderComponent.Image.Height)
                     {                      
-                        positionComponent.Y += physicsComponent.SpeedY;                       
+                        positionComponent.Y += physicsComponent.SpeedY;
                     }
                     if (lifeComponent != null)
                     {

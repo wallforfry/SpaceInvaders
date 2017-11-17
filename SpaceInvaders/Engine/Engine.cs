@@ -29,7 +29,8 @@ namespace SpaceInvaders
             newBunker(gameSize.Width / 2 + 200);
 
           
-            newBlockEnemy(1);
+            newBlockEnemy(2, SpaceInvaders.Properties.Resources.ship7, 400);
+            newBlockEnemy(2, SpaceInvaders.Properties.Resources.ship6, 450);
             //newBlockEnemy(5);       
             
 
@@ -126,29 +127,33 @@ namespace SpaceInvaders
             entityList.Add(test);
         }   
 
-        public void newBlockEnemy(int number)
+        public void newBlockEnemy(int number, Bitmap image, int positionY)
         {
+            int basePositionX = 200;
             for (int i = 1; i <= number; i++)
             {
                 RenderComponent c1 = new RenderComponent();
-                c1.Image = SpaceInvaders.Properties.Resources.ship7;
+                c1.Image = image;
 
                 PositionComponent c2 = new PositionComponent();
-                c2.Position = new Vecteur2D(200 + i * 50, 400);
+                c2.Position = new Vecteur2D(basePositionX + (i-1) * 50, positionY);
 
                 PhysicsComponent c3 = new PhysicsComponent();
-                c3.Vector = new Vecteur2D(1, 0);
+                c3.Vector = new Vecteur2D(0.5, 10);
                 c3.TypeOfObject = TypeOfObject.AI;
                 
                 LifeComponent c4 = new LifeComponent();
                 c4.Lives = 3;
 
-                /*EnemyBlockComponent c4 = new EnemyBlockComponent();
-                c4.NumberOfEnemy = number;
-                c4.PositionInLine = i;
+                EnemyBlockComponent c5 = new EnemyBlockComponent();
+                c5.NumberOfEnemy = number;
+                c5.PositionInLine = i;
+                c5.Position = new Vecteur2D(basePositionX, positionY);
+                c5.Size = new Vecteur2D((number-1) * 50 + (number-1) * c1.Image.Width, c1.Image.Height);
+                
 
-                Entity entity = new Entity(c1, c2, c3, c4);*/
-                Entity entity = new Entity(c1, c2, c3, c4);
+                Entity entity = new Entity(c1, c2, c3, c4, c5);
+                //Entity entity = new Entity(c1, c2, c3, c4);
                 entityList.Add(entity);
             }
         }

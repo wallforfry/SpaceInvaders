@@ -30,7 +30,7 @@ namespace SpaceInvaders
                         //On cherche toutes les autres entitées
                         foreach (var entity2 in gameInstance.getEntity())
                         {
-                            //Si on ne test pas e1 != e2
+                            //Si e1 != e2
                             if (!entity.Equals(entity2))
                             {                                
                                 RenderComponent renderComponent2 = (RenderComponent) entity2.GetComponent(typeof(RenderComponent));
