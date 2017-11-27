@@ -16,18 +16,20 @@ namespace SpaceInvaders
         public static HashSet<Keys> keyPressed = new HashSet<Keys>();
         
         public GameState CurrentGameState { get; set; }
+        
+        public EntityManager WorldEntityManager { get; set; }
 
         public Engine(Size gameSize)
         {
             GameSize = gameSize;          
             //newBall();  
             
-            newSpaceship();
+            /*newSpaceship();
           
             newBunker(gameSize.Width / 2 - 300);
             newBunker(gameSize.Width / 2 - 50);
             newBunker(gameSize.Width / 2 + 200);
-
+           
 
             int basePositionX = 200;
             int number = 2;
@@ -48,19 +50,73 @@ namespace SpaceInvaders
             newBlockEnemy(3, SpaceInvaders.Properties.Resources.ship6, 450, c5);          
             //newBlockEnemy(5);       
             
+            */
+            
+            WorldEntityManager = new EntityManager();
+            
+            //////SpaceShip///////
+            Entity entity = WorldEntityManager.CreateEntity();             
 
-            systemsList.Add(new GameEngineSystem());
+            RenderComponent c1 = entity.CreateComponent<RenderComponent>();
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
+
+            PositionComponent c2 = entity.CreateComponent<PositionComponent>();
+            c2.Position = new Vecteur2D(300.0,550.0);
+
+            LifeComponent c3 = entity.CreateComponent<LifeComponent>();
+            c3.Lives = 2;
+
+            PhysicsComponent c7 = entity.CreateComponent<PhysicsComponent>();
+            c7.Vector = new Vecteur2D();
+            c7.TypeOfObject = TypeOfObject.CONTROLABLE;
+            
+            //////Enemy///////
+            /*Entity enemy = WorldEntityManager.CreateEntity();             
+            
+            enemy.CreateComponent<RenderComponent>();
+            enemy.CreateComponent<PositionComponent>();
+            enemy.CreateComponent<LifeComponent>();
+
+            RenderComponent c4 = enemy.GetComponent<RenderComponent>();
+            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
+
+            PositionComponent c5 = enemy.GetComponent<PositionComponent>();
+            c5.Position = new Vecteur2D(300.0,100.0);
+
+            LifeComponent c6 = enemy.GetComponent<LifeComponent>();
+            c6.Lives = 2;
+            */
+            
+            
+            
+
+
+            ImageRenderSystem renderSystem = new ImageRenderSystem();
+            renderSystem.Initialize(this);
+            systemsList.Add(renderSystem);
+            
+            MovablePhysicsSystem movableSystem = new MovablePhysicsSystem();
+            movableSystem.Initialize(this);
+            systemsList.Add(movableSystem);
+            
+            PlayerInputSystem playerSystem = new PlayerInputSystem();
+            playerSystem.Initialize(this);
+            systemsList.Add(playerSystem);
+            
+            
+
+            /*systemsList.Add(new GameEngineSystem());
             systemsList.Add(new ImageRenderSystem());
             systemsList.Add(new ShapeRenderSystem());
             systemsList.Add(new PlayerInputSystem());
             systemsList.Add(new MovablePhysicsSystem());
             systemsList.Add(new AIInputSystem());
-            systemsList.Add(new CollisionSystem());
+            systemsList.Add(new CollisionSystem());*/
             
             CurrentGameState = GameState.PLAY;
         }
 
-        public void newBall()
+        /*public void newBall()
         {
             ShapeComponent c1 = new ShapeComponent();
             c1.Radius = 10;
@@ -202,7 +258,7 @@ namespace SpaceInvaders
             
             Entity entity = new Entity(c1, c2, c3);            
             entityList.Add(entity);
-        }
+        }*/
         
         public void Draw(Graphics graphics)
         {          

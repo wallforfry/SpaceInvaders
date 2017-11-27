@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\CompositionBase.cs" />
     <Compile Include="Components\EnemyBlockComponent.cs" />
     <Compile Include="Components\FireComponent.cs" />
     <Compile Include="Components\IComponent.cs" />
@@ -69,6 +70,10 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Nodes\CompositionNodes.cs" />
+    <Compile Include="Nodes\MovableComposition.cs" />
+    <Compile Include="Nodes\PlayerComposition.cs" />
+    <Compile Include="Nodes\RenderComposition.cs" />
     <Compile Include="Systems\AIInputSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
     <Compile Include="Systems\IEngineSystem.cs" />

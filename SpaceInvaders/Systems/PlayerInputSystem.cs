@@ -3,17 +3,26 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
+using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
     public class PlayerInputSystem : IEngineSystem
     {
+        private CompositionNodes<PlayerComposition> _playerNodes;
+        
+        public void Initialize(Engine gameInstance)
+        {
+            _playerNodes = gameInstance.WorldEntityManager.GetNodes<PlayerComposition>();
+        }
+        
         public void Update(Engine gameEngine)
         {
+            /*
             if (KeyboardHelper.isPressed(Keys.Space))
             {
                 // create new BalleQuiTombe
-                gameEngine.newBall();               
+                ///////gameEngine.newBall();               
                 // release key space (no autofire)
                 KeyboardHelper.ReleaseKey(Keys.Space);
             }
@@ -21,10 +30,10 @@ namespace SpaceInvaders
             foreach (var entity in gameEngine.getEntity().ToList())
             {
                 
-                PhysicsComponent physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));
-                FireComponent fireComponent = (FireComponent) entity.GetComponent(typeof(FireComponent));
-                PositionComponent positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                RenderComponent renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
+                PhysicsComponent physicsComponent = entity.GetComponent<PhysicsComponent>();
+                FireComponent fireComponent = entity.GetComponent<FireComponent>();
+                PositionComponent positionComponent = entity.GetComponent<PositionComponent>();
+                RenderComponent renderComponent = entity.GetComponent<RenderComponent>();
                          
                 if (physicsComponent != null)
                 {
@@ -56,14 +65,14 @@ namespace SpaceInvaders
                     {
                         
                         //TODO: Si on fait un newMissile ici, la collection est modifiée du coup le foreach plante. Il faut essayer d'inverser le test d'appui sur Entrer et le foreach ou un truc du genre
-                        if (!((LifeComponent) fireComponent.Entity.GetComponent(typeof(LifeComponent))).IsAlive)
+                        if (!fireComponent.Entity.GetComponent<LifeComponent>().IsAlive)
                         {
-                            fireComponent.Entity =
-                                gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width / 2,
-                                       positionComponent.Y, 1);
+                            //////fireComponent.Entity =
+                                //////gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width / 2,
+                                //////       positionComponent.Y, 1);
                             /*fireComponent.Entity =
                                 gameEngine.newEnemy(positionComponent.X,
-                                    positionComponent.Y);*/
+                                    positionComponent.Y);*
                         }
                         
                         /*LifeComponent missileLifeComponent = ((LifeComponent)
@@ -79,13 +88,35 @@ namespace SpaceInvaders
                             //missilePositionComponent.Position = new Vecteur2D(positionComponent.Position);
                             missilePositionComponent.X = positionComponent.X + renderComponent.Image.Width / 2;
                             missilePositionComponent.Y = positionComponent.Y;
-                        }*/
+                        }
 
                         KeyboardHelper.ReleaseKey(Keys.Enter);
                     }
                 }
 
-            }                              
+            }*/
+            foreach (var node in _playerNodes.Nodes.ToArray())
+            {
+                if (node.Physic.TypeOfObject == TypeOfObject.CONTROLABLE)
+                {
+                    if (KeyboardHelper.isPressed(Keys.Right))
+                    {
+                        node.Physic.SpeedX = 1;
+                    }
+                    else if (KeyboardHelper.isPressed(Keys.Left))
+                    {
+                        node.Physic.SpeedX = -1;
+                    }
+                    else
+                    {
+                        node.Physic.SpeedX = 0;
+                    }
+                    //KeyboardHelper.ReleaseKey(Keys.Left);
+                    //KeyboardHelper.ReleaseKey(Keys.Right);
+                }
+            }
+
+
         }
 
         public void Update()

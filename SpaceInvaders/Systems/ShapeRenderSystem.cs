@@ -20,8 +20,8 @@ namespace SpaceInvaders
                 ShapeComponent shapeComponent = null;
                 PositionComponent positionComponent = null;                              
                 
-                shapeComponent = (ShapeComponent) entity.GetComponent(typeof(ShapeComponent));
-                positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));           
+                shapeComponent = entity.GetComponent<ShapeComponent>();
+                positionComponent = entity.GetComponent<PositionComponent>();           
                 
                 if (shapeComponent != null && positionComponent != null)
                 {

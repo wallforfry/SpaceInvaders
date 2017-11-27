@@ -31,7 +31,7 @@ namespace SpaceInvaders
         {
             foreach (var entity in gameEngine.getEntity().ToList())
             {
-                LifeComponent lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
+                LifeComponent lifeComponent = entity.GetComponent<LifeComponent>();
                 if (lifeComponent != null)
                 {
                     if (!lifeComponent.IsAlive)

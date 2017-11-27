@@ -16,10 +16,10 @@ namespace SpaceInvaders
         {
             foreach (var entity in gameInstance.getEntity())
             {     
-                RenderComponent renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
-                PositionComponent positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                LifeComponent lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
-                PhysicsComponent physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));             
+                RenderComponent renderComponent = entity.GetComponent<RenderComponent>();
+                PositionComponent positionComponent = entity.GetComponent<PositionComponent>();
+                LifeComponent lifeComponent = entity.GetComponent<LifeComponent>();
+                PhysicsComponent physicsComponent = entity.GetComponent<PhysicsComponent>();             
 
                 //Si possède les bons composants
                 if (renderComponent != null && positionComponent != null && lifeComponent != null)
@@ -33,10 +33,10 @@ namespace SpaceInvaders
                             //Si e1 != e2
                             if (!entity.Equals(entity2))
                             {                                
-                                RenderComponent renderComponent2 = (RenderComponent) entity2.GetComponent(typeof(RenderComponent));
-                                PositionComponent positionComponent2 = (PositionComponent) entity2.GetComponent(typeof(PositionComponent));
-                                LifeComponent lifeComponent2 = (LifeComponent) entity2.GetComponent(typeof(LifeComponent));
-                                PhysicsComponent physicsComponent2 = (PhysicsComponent) entity2.GetComponent(typeof(PhysicsComponent));
+                                RenderComponent renderComponent2 = entity2.GetComponent<RenderComponent>();
+                                PositionComponent positionComponent2 = entity2.GetComponent<PositionComponent>();
+                                LifeComponent lifeComponent2 = entity2.GetComponent<LifeComponent>();
+                                PhysicsComponent physicsComponent2 = entity2.GetComponent<PhysicsComponent>();
                                  
                                 //Si e2 possède les bons composants
                                 if (renderComponent2 != null && positionComponent2 != null && lifeComponent2 != null)
@@ -68,10 +68,10 @@ namespace SpaceInvaders
 
         void TestCollision(Entity e1, Entity e2)
         {
-            RenderComponent renderComponent = (RenderComponent) e1.GetComponent(typeof(RenderComponent));
-            RenderComponent renderComponent2 = (RenderComponent) e2.GetComponent(typeof(RenderComponent));           
-            PositionComponent positionComponent = (PositionComponent) e1.GetComponent(typeof(PositionComponent));
-            PositionComponent positionComponent2 = (PositionComponent) e2.GetComponent(typeof(PositionComponent));
+            RenderComponent renderComponent = e1.GetComponent<RenderComponent>();
+            RenderComponent renderComponent2 = e2.GetComponent<RenderComponent>();           
+            PositionComponent positionComponent = e1.GetComponent<PositionComponent>();
+            PositionComponent positionComponent2 = e2.GetComponent<PositionComponent>();
 
             for (int y = 0; y < renderComponent.Image.Height; y++)           
             {
@@ -114,8 +114,8 @@ namespace SpaceInvaders
 
         void RemoveLife(Entity e1, Entity e2)
         {
-            LifeComponent lifeComponent = (LifeComponent) e1.GetComponent(typeof(LifeComponent));
-            LifeComponent lifeComponent2 = (LifeComponent) e2.GetComponent(typeof(LifeComponent));            
+            LifeComponent lifeComponent = e1.GetComponent<LifeComponent>();
+            LifeComponent lifeComponent2 = e2.GetComponent<LifeComponent>();            
             lifeComponent.Lives -= 1;
             lifeComponent2.Lives -= 1;
         }
@@ -126,10 +126,10 @@ namespace SpaceInvaders
         
         void debugDisplayLifes(Entity e1, Entity e2)
         {
-            PhysicsComponent physicsComponent = (PhysicsComponent) e1.GetComponent(typeof(PhysicsComponent));
-            PhysicsComponent physicsComponent2 = (PhysicsComponent) e2.GetComponent(typeof(PhysicsComponent));
-            LifeComponent lifeComponent = (LifeComponent) e1.GetComponent(typeof(LifeComponent));
-            LifeComponent lifeComponent2 = (LifeComponent) e2.GetComponent(typeof(LifeComponent));
+            PhysicsComponent physicsComponent = e1.GetComponent<PhysicsComponent>();
+            PhysicsComponent physicsComponent2 = e2.GetComponent<PhysicsComponent>();
+            LifeComponent lifeComponent = e1.GetComponent<LifeComponent>();
+            LifeComponent lifeComponent2 = e2.GetComponent<LifeComponent>();
             
          Debug.WriteLine(physicsComponent.TypeOfObject +" life = " +lifeComponent.Lives);
             lifeComponent.Lives -=1;

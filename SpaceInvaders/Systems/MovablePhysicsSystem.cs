@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Remoting.Messaging;
 using System.Windows.Forms.VisualStyles;
+using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
@@ -10,12 +11,19 @@ namespace SpaceInvaders
     {
         public void Update()
         {
-            
+
+        }
+
+        private CompositionNodes<MovableComposition> _movableNodes;
+
+        public void Initialize(Engine gameInstance)
+        {
+            _movableNodes = gameInstance.WorldEntityManager.GetNodes<MovableComposition>();
         }
 
         public void Update(Engine gameEngine, double deltaT)
         {
-            foreach (var entity in gameEngine.getEntity())
+            /*foreach (var entity in gameEngine.getEntity())
             {
                 RenderComponent renderComponent = null;
                 PositionComponent positionComponent = null;
@@ -25,21 +33,22 @@ namespace SpaceInvaders
                 EnemyBlockComponent enemyBlockComponent = null;
                 
                 
-                renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));
-                positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));
-                shapeComponent = (ShapeComponent) entity.GetComponent(typeof(ShapeComponent));
-                lifeComponent = (LifeComponent) entity.GetComponent(typeof(LifeComponent));
-                enemyBlockComponent = (EnemyBlockComponent) entity.GetComponent(typeof(EnemyBlockComponent));
+                renderComponent = entity.GetComponent<RenderComponent>();
+                positionComponent = entity.GetComponent<PositionComponent>();
+                physicsComponent = entity.GetComponent<PhysicsComponent>();
+                shapeComponent = entity.GetComponent<ShapeComponent>();
+                lifeComponent = entity.GetComponent<LifeComponent>();
+                enemyBlockComponent = entity.GetComponent<EnemyBlockComponent>();
 
-
+                
                 if (renderComponent != null && positionComponent != null && physicsComponent != null && enemyBlockComponent != null)
                 {                 
                     if (enemyBlockComponent.Position.X >= 0 &&
-                        enemyBlockComponent.Position.X + enemyBlockComponent.Size.X <= gameEngine.GameSize.Width)
+                        enemyBlockComponent.Position.X + getEnemyBoxWidth(gameEngine) <= gameEngine.GameSize.Width)
+                        //enemyBlockComponent.Position.X + enemyBlockComponent.Size.X <= gameEngine.GameSize.Width)
                     {
                         positionComponent.X += physicsComponent.SpeedX;
-                        enemyBlockComponent.Position.X += physicsComponent.SpeedX;            
+                        //enemyBlockComponent.Position.X += physicsComponent.SpeedX;
                     }
                     if (enemyBlockComponent.Position.Y >= 0 &&
                         enemyBlockComponent.Position.Y < gameEngine.GameSize.Height - renderComponent.Image.Height)
@@ -55,6 +64,20 @@ namespace SpaceInvaders
                         }
                     }
                     
+                }
+                else if (enemyBlockComponent != null && renderComponent == null && positionComponent == null && physicsComponent == null)
+                {                                  
+                    if (enemyBlockComponent.Position.X >= 0 &&
+                        enemyBlockComponent.Position.X + getEnemyBoxWidth(gameEngine) <= gameEngine.GameSize.Width)
+                    {
+                        enemyBlockComponent.Position.X += 1; //physicsComponent.SpeedX;
+                    }
+                    /*if (enemyBlockComponent.Position.Y >= 0 &&
+                        enemyBlockComponent.Position.Y < gameEngine.GameSize.Height - renderComponent.Image.Height)
+                    {                      
+                        //positionComponent.Y += physicsComponent.SpeedY;
+                        //enemyBlockComponent.Position.Y += physicsComponent.SpeedY;                        
+                    }*
                 }
                 else if (renderComponent != null && positionComponent != null && physicsComponent != null)
                 {                 
@@ -91,6 +114,57 @@ namespace SpaceInvaders
                         positionComponent.Y +=
                             physicsComponent.SpeedY;
                     }
+                }
+            }
+        }
+
+        double getEnemyBoxWidth(Engine gameEngine)
+        {                
+                
+            RenderComponent renderComponent = null;
+            PositionComponent positionComponent = null;
+            PhysicsComponent physicsComponent = null;
+            ShapeComponent shapeComponent = null;
+            LifeComponent lifeComponent = null;
+            EnemyBlockComponent enemyBlockComponent = null;
+
+            double maxSize = 0;
+            
+            
+            foreach (var entity in gameEngine.getEntity())
+            {                               
+                renderComponent = entity.GetComponent<RenderComponent>();
+                positionComponent = entity.GetComponent<PositionComponent>();
+                physicsComponent = entity.GetComponent<PhysicsComponent>();
+                shapeComponent = entity.GetComponent<ShapeComponent>();
+                lifeComponent = entity.GetComponent<LifeComponent>();
+                enemyBlockComponent = entity.GetComponent<EnemyBlockComponent>();
+
+
+                if (renderComponent != null && positionComponent != null && physicsComponent != null &&
+                    enemyBlockComponent != null)
+                {
+                    if (enemyBlockComponent.Size.X > maxSize)
+                    {
+                        maxSize = enemyBlockComponent.Size.X;
+                    }
+                }
+
+            }
+            return maxSize;
+        }*/
+
+            foreach (var node in _movableNodes.Nodes.ToArray())
+            {
+                if (node.Position.X >= 0 &&
+                    node.Position.X < gameEngine.GameSize.Width - node.Render.Image.Width)
+                {
+                    node.Position.X += node.Physic.SpeedX;
+                }
+                if (node.Position.Y >= 0 &&
+                    node.Position.Y < gameEngine.GameSize.Height - node.Render.Image.Height)
+                {
+                    node.Position.Y += node.Physic.SpeedY;
                 }
             }
         }

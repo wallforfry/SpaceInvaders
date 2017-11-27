@@ -24,10 +24,10 @@ namespace SpaceInvaders
                 EnemyBlockComponent enemyBlockComponent = null;
                 RenderComponent renderComponent = null;
 
-                physicsComponent = (PhysicsComponent) entity.GetComponent(typeof(PhysicsComponent));
-                positionComponent = (PositionComponent) entity.GetComponent(typeof(PositionComponent));
-                enemyBlockComponent = (EnemyBlockComponent) entity.GetComponent(typeof(EnemyBlockComponent));
-                renderComponent = (RenderComponent) entity.GetComponent(typeof(RenderComponent));                             
+                physicsComponent = entity.GetComponent<PhysicsComponent>();
+                positionComponent = entity.GetComponent<PositionComponent>();
+                enemyBlockComponent = entity.GetComponent<EnemyBlockComponent>();
+                renderComponent = entity.GetComponent<RenderComponent>();                             
 
                 if (physicsComponent != null && positionComponent != null)
                 {

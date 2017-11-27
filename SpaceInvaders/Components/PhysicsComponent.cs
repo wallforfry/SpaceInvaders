@@ -1,7 +1,7 @@
 ﻿namespace SpaceInvaders
 {
     public class PhysicsComponent : IComponent
-    {
+    {        
         public TypeOfObject TypeOfObject { get; set; }
         public Vecteur2D Vector { get; set; }       
         public double SpeedX { get { return Vector.X; } set { Vector.X = value; }}

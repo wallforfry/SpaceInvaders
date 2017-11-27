@@ -7,10 +7,16 @@ namespace SpaceInvaders
 {
     public class EntityManager
     {
+        public EntityManager()
+        {
+            this._components = new Dictionary<Type, Dictionary<int, IComponent>>();
+            this._entities = new Dictionary<int, Entity>();
+        }
+        
         Entity this[int index] => _entities[index];
  
         // Entités, indexés par leur ID unique
-        private readonly Dictionary<int, Entity> _entities;
+        private Dictionary<int, Entity> _entities;
  
         // "Matrice" de composants, l'essentiel des données de jeu est stocké ici.
         // La première clé est le type de composant.
@@ -18,15 +24,15 @@ namespace SpaceInvaders
         private readonly Dictionary<Type, Dictionary<int, IComponent>> _components;
  
         // Gestion de la durée de vie d'une entité
-        Entity CreateEntity()
+        public Entity CreateEntity()
         {
-            Entity entity = new Entity();
             int uid = DateTime.Now.Second+DateTime.Now.Millisecond.GetHashCode();
-            _entities.Add(uid,entity);
+            Entity entity = new Entity(uid);
+            _entities.Add(uid, entity);
             return entity;
         }
 
-        bool DestroyEntity(int id)
+        public bool DestroyEntity(int id)
         {
             foreach (var keys in _components.Keys)
             {
@@ -41,29 +47,42 @@ namespace SpaceInvaders
         }
  
         // Gestion de la composition d'une entité
-        TComponent CreateComponent<TComponent>(int entityId)
+        public TComponent CreateComponent<TComponent>(int entityId)
             where TComponent : IComponent, new()
-        {          
+        {
             TComponent component = new TComponent();
-            _components[typeof(TComponent)][entityId] = component;
+            Dictionary<int, IComponent> dictionary = new Dictionary<int, IComponent>();            
+            dictionary.Add(entityId, component);
+            _components.Add(typeof(TComponent), dictionary);                         
 
             return component;
         }
 
-        bool RemoveComponent<TComponent>(int entityId)
+        public bool RemoveComponent<TComponent>(int entityId)
             where TComponent : IComponent, new()
         {
             _components[typeof(TComponent)].Remove(entityId);
             return true;
         }
 
-        TComponent GetComponent<TComponent>(int entityId)
+        public TComponent GetComponent<TComponent>(int entityId)
             where TComponent : class, IComponent, new()
         {
-            return _components[typeof(TComponent)][entityId] as TComponent;
+            TComponent component;
+            Dictionary<int, IComponent> dictionary;
+            try
+            {
+                return _components[typeof(TComponent)][entityId] as TComponent;
+            }
+            catch (System.Collections.Generic.KeyNotFoundException)
+            {
+                
+            }
+            
+            return null;
         }
 
-        IEnumerable<IComponent> GetComponents(int entityId)
+        public List<IComponent> GetComponents(int entityId)
         {
             List<IComponent> result = new List<IComponent>();
 
@@ -81,7 +100,15 @@ namespace SpaceInvaders
  
         // Retourne des "vues" sur les entités dont la composition
         // correspond à TComposition (plus de détails sur cette partie plus tard)
-        CompositionNode<TComposition> GetNodes()
-            where TComposition : CompositionBase {...}
+        public CompositionNodes<TComposition> GetNodes<TComposition> ()
+            where TComposition : CompositionBase, new()
+        {
+            CompositionNodes<TComposition> compositionNodes = new CompositionNodes<TComposition>();
+            foreach (var entity in _entities)
+            {
+                compositionNodes.Inspect(entity.Value);
+            }
+            return compositionNodes;
+        }
     }
 }
