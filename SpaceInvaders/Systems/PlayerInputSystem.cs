@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using SpaceInvaders.Nodes;
@@ -17,100 +18,56 @@ namespace SpaceInvaders
         }
         
         public void Update(Engine gameEngine)
-        {
-            /*
-            if (KeyboardHelper.isPressed(Keys.Space))
-            {
-                // create new BalleQuiTombe
-                ///////gameEngine.newBall();               
-                // release key space (no autofire)
-                KeyboardHelper.ReleaseKey(Keys.Space);
-            }
-                     
-            foreach (var entity in gameEngine.getEntity().ToList())
-            {
-                
-                PhysicsComponent physicsComponent = entity.GetComponent<PhysicsComponent>();
-                FireComponent fireComponent = entity.GetComponent<FireComponent>();
-                PositionComponent positionComponent = entity.GetComponent<PositionComponent>();
-                RenderComponent renderComponent = entity.GetComponent<RenderComponent>();
-                         
-                if (physicsComponent != null)
-                {
-                    if (physicsComponent.TypeOfObject == TypeOfObject.CONTROLABLE)
-                    {
-                        if (KeyboardHelper.isPressed(Keys.Right))
-                        {
-                            physicsComponent.SpeedX = 1;
-                        }
-                        else if (KeyboardHelper.isPressed(Keys.Left))
-                        {
-                            physicsComponent.SpeedX = -1;
-                        }
-                        else
-                        {
-                            physicsComponent.SpeedX = 0;
-                        }
-                        //KeyboardHelper.ReleaseKey(Keys.Left);
-                        //KeyboardHelper.ReleaseKey(Keys.Right);
-                    }
-                }
-
-
-
-
-                if (fireComponent != null && positionComponent != null && renderComponent != null)
-                {
-                    if (KeyboardHelper.isPressed(Keys.Enter))
-                    {
-                        
-                        //TODO: Si on fait un newMissile ici, la collection est modifiée du coup le foreach plante. Il faut essayer d'inverser le test d'appui sur Entrer et le foreach ou un truc du genre
-                        if (!fireComponent.Entity.GetComponent<LifeComponent>().IsAlive)
-                        {
-                            //////fireComponent.Entity =
-                                //////gameEngine.newMissile(positionComponent.X + renderComponent.Image.Width / 2,
-                                //////       positionComponent.Y, 1);
-                            /*fireComponent.Entity =
-                                gameEngine.newEnemy(positionComponent.X,
-                                    positionComponent.Y);*
-                        }
-                        
-                        /*LifeComponent missileLifeComponent = ((LifeComponent)
-                                fireComponent.Entity.GetComponents()[typeof(LifeComponent)]);
-                        
-                        if (!missileLifeComponent.IsAlive)
-                        {
-                            PositionComponent missilePositionComponent =
-                            ((PositionComponent) fireComponent.Entity.GetComponents()[typeof(PositionComponent)]
-                            );
-
-                            missileLifeComponent.Lives = 1;
-                            //missilePositionComponent.Position = new Vecteur2D(positionComponent.Position);
-                            missilePositionComponent.X = positionComponent.X + renderComponent.Image.Width / 2;
-                            missilePositionComponent.Y = positionComponent.Y;
-                        }
-
-                        KeyboardHelper.ReleaseKey(Keys.Enter);
-                    }
-                }
-
-            }*/
+        {                     
+            Initialize(gameEngine);
+            
             foreach (var node in _playerNodes.Nodes.ToArray())
             {
                 if (node.Physic.TypeOfObject == TypeOfObject.CONTROLABLE)
                 {
                     if (KeyboardHelper.isPressed(Keys.Right))
                     {
-                        node.Physic.SpeedX = 1;
+                        if(node.Position.X < gameEngine.GameSize.Width - node.Render.Image.Width)
+                            node.Physic.Move.X = node.Physic.SpeedX;
+                        else
+                            node.Physic.Move.X = 0;                        
                     }
                     else if (KeyboardHelper.isPressed(Keys.Left))
                     {
-                        node.Physic.SpeedX = -1;
+                        if (node.Position.X > 0)
+                            node.Physic.Move.X = -node.Physic.SpeedX;
+                        else
+                            node.Physic.Move.X = 0;
                     }
                     else
                     {
-                        node.Physic.SpeedX = 0;
+                        node.Physic.Move.X = 0;
                     }
+
+                    if (KeyboardHelper.isPressed(Keys.Space))
+                    {                       
+                        if (node.Fire.Entity == null || !node.Fire.Entity.GetComponent<LifeComponent>().IsAlive)
+                        {
+                            Entity entity = gameEngine.WorldEntityManager.CreateEntity();
+                            LifeComponent c1 = entity.CreateComponent<LifeComponent>();
+                            c1.Lives = 1;
+
+                            PhysicsComponent c2 = entity.CreateComponent<PhysicsComponent>();
+                            c2.Vector = new Vecteur2D(0, -2);
+                            c2.Move = new Vecteur2D(0, -2);
+                            c2.TypeOfObject = TypeOfObject.MOVABLE;
+
+                            PositionComponent c3 = entity.CreateComponent<PositionComponent>();
+                            c3.Position = new Vecteur2D(node.Position.X + node.Render.Image.Width / 2, node.Position.Y);
+
+                            RenderComponent c4 = entity.CreateComponent<RenderComponent>();
+                            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.shoot1);
+
+                            node.Fire.Entity = entity;
+                        }
+
+                    }
+                    
                     //KeyboardHelper.ReleaseKey(Keys.Left);
                     //KeyboardHelper.ReleaseKey(Keys.Right);
                 }

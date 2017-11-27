@@ -33,6 +33,12 @@ namespace SpaceInvaders
         {
             return _manager.GetComponent<TComponent>(this.Id);
         }
+
+        public bool HasComponent<TComponent>()
+            where TComponent : class, IComponent, new()
+        {
+            return _manager.HasComponent<TComponent>(this.Id);
+        }
         
         // La manager responsable de cette entité
         private readonly EntityManager _manager;

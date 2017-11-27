@@ -70,6 +70,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Nodes\AIComposition.cs" />
     <Compile Include="Nodes\CompositionNodes.cs" />
     <Compile Include="Nodes\MovableComposition.cs" />
     <Compile Include="Nodes\PlayerComposition.cs" />

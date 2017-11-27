@@ -14,8 +14,8 @@ namespace SpaceInvaders
         public void Initialize(Engine gameInstance)
         {
             _renderNodes = gameInstance.WorldEntityManager.GetNodes<RenderComposition>();
+   
         }
-        
         
         public void Update(Engine gameInstance, Graphics graphics)
         {
@@ -45,11 +45,18 @@ namespace SpaceInvaders
                     }                                        
                 }
             }*/
+            Initialize(gameInstance);
+            
             foreach (var node in _renderNodes.Nodes.ToArray())
             {
                 if (node.Life.IsAlive)
                 {
                     graphics.DrawImage(node.Render.Image, (float) node.Position.X, (float) node.Position.Y);
+                    if (node.Position.Y < 0)
+                    {
+                        node.Life.Lives = 0;
+                        gameInstance.WorldEntityManager.DestroyEntity(node.Owner.Id);
+                    }
                 }
             }                                                           
         }

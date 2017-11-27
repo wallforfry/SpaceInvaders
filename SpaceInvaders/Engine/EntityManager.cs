@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Policy;
+using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
 namespace SpaceInvaders
@@ -26,23 +27,35 @@ namespace SpaceInvaders
         // Gestion de la durée de vie d'une entité
         public Entity CreateEntity()
         {
-            int uid = DateTime.Now.Second+DateTime.Now.Millisecond.GetHashCode();
-            Entity entity = new Entity(uid);
+            Random rdm = new Random();
+            int uid = DateTime.Now.Second+DateTime.Now.Millisecond.GetHashCode()+rdm.Next();
+            Entity entity;
+            if (_entities.ContainsKey(uid))
+            {
+                entity = new Entity(uid + rdm.Next());
+
+            }
+            else
+            {
+                entity = new Entity(uid);
+            }
             _entities.Add(uid, entity);
             return entity;
         }
 
         public bool DestroyEntity(int id)
         {
-            foreach (var keys in _components.Keys)
-            {
+            foreach (var value in _components)
+            {               
                 IComponent component;
-                if (_components[keys].TryGetValue(id, out component))
+                if (_components[value.Key].TryGetValue(id, out component))
                 {
-                    _components[keys].Remove(id);
+                    _components[value.Key].Remove(id);
                 }
-                
+
             }
+
+            _entities.Remove(id);
             return true;
         }
  
@@ -59,7 +72,7 @@ namespace SpaceInvaders
         }
 
         public bool RemoveComponent<TComponent>(int entityId)
-            where TComponent : IComponent, new()
+            where TComponent : IComponent
         {
             _components[typeof(TComponent)].Remove(entityId);
             return true;
@@ -76,10 +89,29 @@ namespace SpaceInvaders
             }
             catch (System.Collections.Generic.KeyNotFoundException)
             {
-                
+                return null;
             }
             
             return null;
+        }
+        
+        public bool HasComponent<TComponent>(int entityId)
+            where TComponent : class, IComponent, new()
+        {
+            TComponent component;
+            Dictionary<int, IComponent> dictionary;
+            try
+            {
+                component = _components[typeof(TComponent)][entityId] as TComponent;
+                if (component != null)
+                    return true;
+            }
+            catch (System.Collections.Generic.KeyNotFoundException)
+            {
+                return false;
+            }
+            
+            return false;
         }
 
         public List<IComponent> GetComponents(int entityId)

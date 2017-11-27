@@ -59,7 +59,32 @@ namespace SpaceInvaders
 
     private bool Matches(Entity entity)
     {
-      return true;
+      if (typeof(TComposition) == typeof(RenderComposition))
+      {
+        return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
+               entity.HasComponent<LifeComponent>();
+      }
+
+      if (typeof(TComposition) == typeof(MovableComposition))
+      {
+        return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
+               entity.HasComponent<PhysicsComponent>();
+      }
+
+      if (typeof(TComposition) == typeof(PlayerComposition))
+      {
+        return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
+               entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>() && entity.HasComponent<FireComponent>();
+      }
+
+      if (typeof(TComposition) == typeof(AIComposition))
+      {
+        return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
+               entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>() &&
+               entity.HasComponent<FireComponent>() && entity.HasComponent<EnemyBlockComponent>();
+      }
+
+      return false;
     }
 
     private TComposition CreateNode(Entity entity)         
@@ -68,13 +93,11 @@ namespace SpaceInvaders
       {
         TComposition composition = Activator.CreateInstance<RenderComposition>() as TComposition;
 
-        if (true)
-        {
+
           composition.Owner = entity;
           (composition as RenderComposition).Position = entity.GetComponent<PositionComponent>();
           (composition as RenderComposition).Render = entity.GetComponent<RenderComponent>();
-          (composition as RenderComposition).Life = entity.GetComponent<LifeComponent>(); 
-        }
+          (composition as RenderComposition).Life = entity.GetComponent<LifeComponent>();         
         
         return composition;
       }
@@ -84,13 +107,10 @@ namespace SpaceInvaders
       {
         TComposition composition = Activator.CreateInstance<MovableComposition>() as TComposition;
 
-        if (true)
-        {
           composition.Owner = entity;
           (composition as MovableComposition).Position = entity.GetComponent<PositionComponent>();
           (composition as MovableComposition).Render = entity.GetComponent<RenderComponent>();
-          (composition as MovableComposition).Physic = entity.GetComponent<PhysicsComponent>(); 
-        }
+          (composition as MovableComposition).Physic = entity.GetComponent<PhysicsComponent>();         
         
         return composition;
       }
@@ -99,14 +119,27 @@ namespace SpaceInvaders
       {
         TComposition composition = Activator.CreateInstance<PlayerComposition>() as TComposition;
 
-        if (true)
-        {
           composition.Owner = entity;
           (composition as PlayerComposition).Position = entity.GetComponent<PositionComponent>();
           (composition as PlayerComposition).Render = entity.GetComponent<RenderComponent>();
           (composition as PlayerComposition).Physic = entity.GetComponent<PhysicsComponent>(); 
           (composition as PlayerComposition).Life = entity.GetComponent<LifeComponent>(); 
-        }
+          (composition as PlayerComposition).Fire = entity.GetComponent<FireComponent>();        
+        
+        return composition;
+      }
+      
+      if (typeof(TComposition) == typeof(AIComposition))       
+      {
+        TComposition composition = Activator.CreateInstance<AIComposition>() as TComposition;
+
+        composition.Owner = entity;
+        (composition as AIComposition).Position = entity.GetComponent<PositionComponent>();
+        (composition as AIComposition).Render = entity.GetComponent<RenderComponent>();
+        (composition as AIComposition).Physic = entity.GetComponent<PhysicsComponent>(); 
+        (composition as AIComposition).Life = entity.GetComponent<LifeComponent>(); 
+        (composition as AIComposition).Fire = entity.GetComponent<FireComponent>();        
+        (composition as AIComposition).Enemy = entity.GetComponent<EnemyBlockComponent>();        
         
         return composition;
       }

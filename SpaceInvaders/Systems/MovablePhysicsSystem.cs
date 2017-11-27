@@ -23,23 +23,8 @@ namespace SpaceInvaders
 
         public void Update(Engine gameEngine, double deltaT)
         {
-            /*foreach (var entity in gameEngine.getEntity())
-            {
-                RenderComponent renderComponent = null;
-                PositionComponent positionComponent = null;
-                PhysicsComponent physicsComponent = null;
-                ShapeComponent shapeComponent = null;
-                LifeComponent lifeComponent = null;
-                EnemyBlockComponent enemyBlockComponent = null;
-                
-                
-                renderComponent = entity.GetComponent<RenderComponent>();
-                positionComponent = entity.GetComponent<PositionComponent>();
-                physicsComponent = entity.GetComponent<PhysicsComponent>();
-                shapeComponent = entity.GetComponent<ShapeComponent>();
-                lifeComponent = entity.GetComponent<LifeComponent>();
-                enemyBlockComponent = entity.GetComponent<EnemyBlockComponent>();
-
+           
+/*
                 
                 if (renderComponent != null && positionComponent != null && physicsComponent != null && enemyBlockComponent != null)
                 {                 
@@ -79,27 +64,7 @@ namespace SpaceInvaders
                         //enemyBlockComponent.Position.Y += physicsComponent.SpeedY;                        
                     }*
                 }
-                else if (renderComponent != null && positionComponent != null && physicsComponent != null)
-                {                 
-                    if (positionComponent.X >= 0 &&
-                        positionComponent.X < gameEngine.GameSize.Width - renderComponent.Image.Width)
-                    {
-                        positionComponent.X += physicsComponent.SpeedX;                                                                       
-                    }
-                    if (positionComponent.Y >= 0 &&
-                        positionComponent.Y < gameEngine.GameSize.Height - renderComponent.Image.Height)
-                    {                      
-                        positionComponent.Y += physicsComponent.SpeedY;
-                    }
-                    if (lifeComponent != null)
-                    {
-                        if (positionComponent.Y < 0)
-                        {
-                            lifeComponent.Lives = 0;
-                        }
-                    }
-                    
-                }
+              
                 else if (shapeComponent != null && positionComponent != null && physicsComponent != null)
                 {
                     if (positionComponent.X >= 0 &&
@@ -153,19 +118,20 @@ namespace SpaceInvaders
             }
             return maxSize;
         }*/
-
+         
+            Initialize(gameEngine);
             foreach (var node in _movableNodes.Nodes.ToArray())
             {
-                if (node.Position.X >= 0 &&
-                    node.Position.X < gameEngine.GameSize.Width - node.Render.Image.Width)
-                {
-                    node.Position.X += node.Physic.SpeedX;
-                }
+               /* if (node.Position.X > 1 &&
+                    node.Position.X < gameEngine.GameSize.Width - node.Render.Image.Width -1)
+                {*/
+                    node.Position.X += node.Physic.Move.X;
+                /*}
                 if (node.Position.Y >= 0 &&
                     node.Position.Y < gameEngine.GameSize.Height - node.Render.Image.Height)
-                {
-                    node.Position.Y += node.Physic.SpeedY;
-                }
+                {*/
+                    node.Position.Y += node.Physic.Move.Y;
+                //}
             }
         }
     }

@@ -54,39 +54,28 @@ namespace SpaceInvaders
             
             WorldEntityManager = new EntityManager();
             
-            //////SpaceShip///////
-            Entity entity = WorldEntityManager.CreateEntity();             
-
-            RenderComponent c1 = entity.CreateComponent<RenderComponent>();
-            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
-
-            PositionComponent c2 = entity.CreateComponent<PositionComponent>();
-            c2.Position = new Vecteur2D(300.0,550.0);
-
-            LifeComponent c3 = entity.CreateComponent<LifeComponent>();
-            c3.Lives = 2;
-
-            PhysicsComponent c7 = entity.CreateComponent<PhysicsComponent>();
-            c7.Vector = new Vecteur2D();
-            c7.TypeOfObject = TypeOfObject.CONTROLABLE;
+            /////SpaceShip////
+            SpaceShip();          
+            
             
             //////Enemy///////
-            /*Entity enemy = WorldEntityManager.CreateEntity();             
+            /*Enemy(-100,30);
+            Enemy(-50,30);
+            Enemy(0,30);
+            Enemy(50,30);*/
+            Enemy(100,30);//*/
             
-            enemy.CreateComponent<RenderComponent>();
-            enemy.CreateComponent<PositionComponent>();
-            enemy.CreateComponent<LifeComponent>();
-
-            RenderComponent c4 = enemy.GetComponent<RenderComponent>();
-            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
-
-            PositionComponent c5 = enemy.GetComponent<PositionComponent>();
-            c5.Position = new Vecteur2D(300.0,100.0);
-
-            LifeComponent c6 = enemy.GetComponent<LifeComponent>();
-            c6.Lives = 2;
-            */
+            Enemy(-100,0);
+            Enemy(-50,0);
+            Enemy(0,0);
+            Enemy(50,0);
+            Enemy(100,0);
             
+            //////Bunker//////
+            
+            Bunker(gameSize.Width / 2 - 300);
+            Bunker(gameSize.Width / 2 - 50);
+            Bunker(gameSize.Width / 2 + 200);
             
             
 
@@ -102,6 +91,10 @@ namespace SpaceInvaders
             PlayerInputSystem playerSystem = new PlayerInputSystem();
             playerSystem.Initialize(this);
             systemsList.Add(playerSystem);
+            
+            AIInputSystem aiSystem = new AIInputSystem();
+            aiSystem.Initialize(this);
+            systemsList.Add(aiSystem);
             
             
 
@@ -136,28 +129,93 @@ namespace SpaceInvaders
             entityList.Add(test);       
             
         }
+        */
 
+        public void SpaceShip()
+        {
+            Entity entity = WorldEntityManager.CreateEntity();             
+
+            RenderComponent c1 = entity.CreateComponent<RenderComponent>();
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
+
+            PositionComponent c2 = entity.CreateComponent<PositionComponent>();
+            c2.Position = new Vecteur2D(300.0,550.0);
+
+            LifeComponent c3 = entity.CreateComponent<LifeComponent>();
+            c3.Lives = 2;
+
+            PhysicsComponent c7 = entity.CreateComponent<PhysicsComponent>();
+            c7.Vector = new Vecteur2D(1,0);
+            c7.Move = new Vecteur2D();
+            c7.TypeOfObject = TypeOfObject.CONTROLABLE;
+
+            FireComponent c9 = entity.CreateComponent<FireComponent>();  
+        }
+
+        public void Enemy(int xShift, int yShift)
+        {
+            Entity enemy = WorldEntityManager.CreateEntity();             
+
+            RenderComponent c4 = enemy.CreateComponent<RenderComponent>();
+            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
+
+            PositionComponent c5 = enemy.CreateComponent<PositionComponent>();
+            c5.Position = new Vecteur2D(300.0+xShift,100.0+yShift);
+
+            LifeComponent c6 = enemy.CreateComponent<LifeComponent>();
+            c6.Lives = 2;
+            
+            PhysicsComponent c8 = enemy.CreateComponent<PhysicsComponent>();
+            c8.Vector = new Vecteur2D(0.5, 15);
+            c8.Move = new Vecteur2D();
+            c8.TypeOfObject = TypeOfObject.AI;
+                      
+            EnemyBlockComponent c9 = enemy.CreateComponent<EnemyBlockComponent>();
+
+            FireComponent c10 = enemy.CreateComponent<FireComponent>();
+        }
+        
+        public void Bunker(double x)
+        {
+            Entity bunker = WorldEntityManager.CreateEntity();
+
+            RenderComponent c1 = bunker.CreateComponent<RenderComponent>();
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.bunker2);
+
+            PositionComponent c2 = bunker.CreateComponent<PositionComponent>();
+            c2.Position = new Vecteur2D(x, 480.0);
+
+            PhysicsComponent c3 = bunker.CreateComponent<PhysicsComponent>();
+            c3.Vector = new Vecteur2D(0,0);
+            c3.Move = new Vecteur2D();
+            c3.TypeOfObject = TypeOfObject.STATIC;
+
+            LifeComponent c4 = bunker.CreateComponent<LifeComponent>();
+            c4.Lives = c1.NumberOfPixel;        
+        }   
+        
         public Entity newMissile(double x, double y, int lives)
         {
-            LifeComponent c1 = new LifeComponent();    
+            Entity entity = WorldEntityManager.CreateEntity();
+            LifeComponent c1 = entity.CreateComponent<LifeComponent>();    
             c1.Lives = lives;
             
-            PhysicsComponent c2 = new PhysicsComponent();
+            PhysicsComponent c2 = entity.CreateComponent<PhysicsComponent>();
             c2.Vector = new Vecteur2D(0, -2);
             c2.TypeOfObject = TypeOfObject.MOVABLE;
            
-            PositionComponent c3 = new PositionComponent();
+            PositionComponent c3 = entity.CreateComponent<PositionComponent>();
             c3.Position = new Vecteur2D(x, y);
             
-            RenderComponent c4 = new RenderComponent();
+            RenderComponent c4 = entity.CreateComponent<RenderComponent>();
             c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.shoot1);
             
-            Entity missile = new Entity(c1, c2, c3, c4);
-            entityList.Add(missile);
+            //Entity missile = new Entity(c1, c2, c3, c4);
+            //entityList.Add(missile);
 
-            return missile;
+            return entity;
         }
-
+        /*
         public void newSpaceship()
         {
             RenderComponent c1 = new RenderComponent();
