@@ -28,9 +28,24 @@ namespace SpaceInvaders
             newBunker(gameSize.Width / 2 - 50);
             newBunker(gameSize.Width / 2 + 200);
 
-          
-            newBlockEnemy(2, SpaceInvaders.Properties.Resources.ship7, 400);
-            newBlockEnemy(2, SpaceInvaders.Properties.Resources.ship6, 450);
+
+            int basePositionX = 200;
+            int number = 2;
+            Bitmap image = SpaceInvaders.Properties.Resources.ship7;
+            int positionY = 400;
+            
+            EnemyBlockComponent c5 = new EnemyBlockComponent();           
+            c5.NumberOfEnemy = number;
+            //c5.PositionInLine = i;
+            c5.Position = new Vecteur2D(basePositionX, positionY);
+            //c5.Size = new Vecteur2D((number-1) * 50 + (number-1) * c1.Image.Width, c1.Image.Height);
+            c5.Size = new Vecteur2D(200, image.Height);
+            
+            Entity block = new Entity(c5);
+            entityList.Add(block);
+            
+            newBlockEnemy(2, SpaceInvaders.Properties.Resources.ship7, 400, c5);
+            newBlockEnemy(3, SpaceInvaders.Properties.Resources.ship6, 450, c5);          
             //newBlockEnemy(5);       
             
 
@@ -79,7 +94,7 @@ namespace SpaceInvaders
             c3.Position = new Vecteur2D(x, y);
             
             RenderComponent c4 = new RenderComponent();
-            c4.Image = SpaceInvaders.Properties.Resources.shoot1;
+            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.shoot1);
             
             Entity missile = new Entity(c1, c2, c3, c4);
             entityList.Add(missile);
@@ -90,7 +105,7 @@ namespace SpaceInvaders
         public void newSpaceship()
         {
             RenderComponent c1 = new RenderComponent();
-            c1.Image = SpaceInvaders.Properties.Resources.ship3;
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
             
             PositionComponent c2 = new PositionComponent();
             c2.Position = new Vecteur2D(300.0,550.0);
@@ -111,7 +126,7 @@ namespace SpaceInvaders
         public void newBunker(double x)
         {
             RenderComponent c1 = new RenderComponent();
-            c1.Image = SpaceInvaders.Properties.Resources.bunker2;
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.bunker2);
             
             PositionComponent c2 = new PositionComponent();
             c2.Position = new Vecteur2D(x, 480.0);
@@ -127,13 +142,14 @@ namespace SpaceInvaders
             entityList.Add(test);
         }   
 
-        public void newBlockEnemy(int number, Bitmap image, int positionY)
+        public void newBlockEnemy(int number, Bitmap image, int positionY, EnemyBlockComponent c5)
         {
-            int basePositionX = 200;
+            int basePositionX = 200;                       
+            
             for (int i = 1; i <= number; i++)
             {
                 RenderComponent c1 = new RenderComponent();
-                c1.Image = image;
+                c1.Image = new Bitmap(image);
 
                 PositionComponent c2 = new PositionComponent();
                 c2.Position = new Vecteur2D(basePositionX + (i-1) * 50, positionY);
@@ -143,14 +159,7 @@ namespace SpaceInvaders
                 c3.TypeOfObject = TypeOfObject.AI;
                 
                 LifeComponent c4 = new LifeComponent();
-                c4.Lives = 3;
-
-                EnemyBlockComponent c5 = new EnemyBlockComponent();
-                c5.NumberOfEnemy = number;
-                c5.PositionInLine = i;
-                c5.Position = new Vecteur2D(basePositionX, positionY);
-                c5.Size = new Vecteur2D((number-1) * 50 + (number-1) * c1.Image.Width, c1.Image.Height);
-                
+                c4.Lives = 3;                                
 
                 Entity entity = new Entity(c1, c2, c3, c4, c5);
                 //Entity entity = new Entity(c1, c2, c3, c4);
@@ -171,7 +180,7 @@ namespace SpaceInvaders
             c3.Position = new Vecteur2D(x, y);
             
             RenderComponent c4 = new RenderComponent();
-            c4.Image = SpaceInvaders.Properties.Resources.ship8;
+            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship8);
             
             Entity missile = new Entity(c1, c2, c3, c4);
             entityList.Add(missile);
@@ -182,7 +191,7 @@ namespace SpaceInvaders
         public void newBlockEnemy2(int i)
         {
             RenderComponent c1 = new RenderComponent();
-            c1.Image = SpaceInvaders.Properties.Resources.ship8;
+            c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship8);
             
             PositionComponent c2 = new PositionComponent();
             c2.Position = new Vecteur2D(200+i*50, 150);
