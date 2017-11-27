@@ -5,6 +5,7 @@
         MOVABLE,
         CONTROLABLE,
         AI,
-        STATIC
+        STATIC,
+        MISSILE
     }
 }

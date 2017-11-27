@@ -59,11 +59,11 @@ namespace SpaceInvaders
             
             
             //////Enemy///////
-            /*Enemy(-100,30);
+            Enemy(-100,30);
             Enemy(-50,30);
             Enemy(0,30);
-            Enemy(50,30);*/
-            Enemy(100,30);//*/
+            Enemy(50,30);
+            Enemy(100,30);
             
             Enemy(-100,0);
             Enemy(-50,0);
@@ -95,6 +95,10 @@ namespace SpaceInvaders
             AIInputSystem aiSystem = new AIInputSystem();
             aiSystem.Initialize(this);
             systemsList.Add(aiSystem);
+            
+            CollisionSystem collisionSystem = new CollisionSystem();
+            collisionSystem.Initialize(this);
+            systemsList.Add(collisionSystem);
             
             
 
@@ -171,6 +175,7 @@ namespace SpaceInvaders
             c8.TypeOfObject = TypeOfObject.AI;
                       
             EnemyBlockComponent c9 = enemy.CreateComponent<EnemyBlockComponent>();
+            c9.FireProbability = 8;
 
             FireComponent c10 = enemy.CreateComponent<FireComponent>();
         }
@@ -194,24 +199,22 @@ namespace SpaceInvaders
             c4.Lives = c1.NumberOfPixel;        
         }   
         
-        public Entity newMissile(double x, double y, int lives)
+        public Entity newMissile(double x, double y, double speedY)
         {
             Entity entity = WorldEntityManager.CreateEntity();
-            LifeComponent c1 = entity.CreateComponent<LifeComponent>();    
-            c1.Lives = lives;
-            
+            LifeComponent c1 = entity.CreateComponent<LifeComponent>();
+            c1.Lives = 1;
+
             PhysicsComponent c2 = entity.CreateComponent<PhysicsComponent>();
-            c2.Vector = new Vecteur2D(0, -2);
-            c2.TypeOfObject = TypeOfObject.MOVABLE;
-           
+            c2.Vector = new Vecteur2D(0, speedY);
+            c2.Move = new Vecteur2D(0, speedY);
+            c2.TypeOfObject = TypeOfObject.MISSILE;
+
             PositionComponent c3 = entity.CreateComponent<PositionComponent>();
-            c3.Position = new Vecteur2D(x, y);
-            
+            c3.Position = new Vecteur2D(x,y);
+
             RenderComponent c4 = entity.CreateComponent<RenderComponent>();
             c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.shoot1);
-            
-            //Entity missile = new Entity(c1, c2, c3, c4);
-            //entityList.Add(missile);
 
             return entity;
         }

@@ -48,22 +48,7 @@ namespace SpaceInvaders
                     {                       
                         if (node.Fire.Entity == null || !node.Fire.Entity.GetComponent<LifeComponent>().IsAlive)
                         {
-                            Entity entity = gameEngine.WorldEntityManager.CreateEntity();
-                            LifeComponent c1 = entity.CreateComponent<LifeComponent>();
-                            c1.Lives = 1;
-
-                            PhysicsComponent c2 = entity.CreateComponent<PhysicsComponent>();
-                            c2.Vector = new Vecteur2D(0, -2);
-                            c2.Move = new Vecteur2D(0, -2);
-                            c2.TypeOfObject = TypeOfObject.MOVABLE;
-
-                            PositionComponent c3 = entity.CreateComponent<PositionComponent>();
-                            c3.Position = new Vecteur2D(node.Position.X + node.Render.Image.Width / 2, node.Position.Y);
-
-                            RenderComponent c4 = entity.CreateComponent<RenderComponent>();
-                            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.shoot1);
-
-                            node.Fire.Entity = entity;
+                            node.Fire.Entity = gameEngine.newMissile(node.Position.X + node.Render.Image.Width / 2, node.Position.Y, -2);
                         }
 
                     }

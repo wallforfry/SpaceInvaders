@@ -132,6 +132,8 @@ namespace SpaceInvaders
                 {*/
                     node.Position.Y += node.Physic.Move.Y;
                 //}
+                if (node.Position.Y > gameEngine.GameSize.Height || node.Position.Y < 0)
+                    gameEngine.WorldEntityManager.DestroyEntity(node.Owner.Id);
             }
         }
     }

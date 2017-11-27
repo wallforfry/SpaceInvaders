@@ -31,29 +31,41 @@ namespace SpaceInvaders
             {
                 if (node.Physic.TypeOfObject == TypeOfObject.AI)
                 {
-                    if (node.Position.X > limitX - node.Render.Image.Width - 20)
+                    if (node.Position.X > limitX - node.Render.Image.Width)
                     {
                         foreach (var other in _aiNodes.Nodes.ToArray())
                         {
                             other.Physic.SpeedX = -other.Physic.SpeedX;
                             other.Physic.Move.X = other.Physic.SpeedX;
+                            other.Position.Y += other.Physic.SpeedY;
                         }                            
                         break;
                     }
                     
-                    if (node.Position.X < 10)
+                    if (node.Position.X < 0)
                     {
                         foreach (var other in _aiNodes.Nodes.ToArray())
                         {
                             other.Physic.SpeedX = -other.Physic.SpeedX;
                             other.Physic.Move.X = other.Physic.SpeedX;
+                            other.Position.Y += other.Physic.SpeedY;
                         }
                         break;
                     }
                     
                     node.Physic.Move.X = node.Physic.SpeedX;                              
                 }
-                
+
+                Random rdm = new Random();
+                if (rdm.Next(1000) < node.Enemy.FireProbability)
+                {
+                    if (node.Fire.Entity == null || !node.Fire.Entity.GetComponent<LifeComponent>().IsAlive)
+                    {
+                        node.Fire.Entity = gameEngine.newMissile(node.Position.X + node.Render.Image.Width / 2,
+                            node.Position.Y, 2);
+                    }
+                }
+
             }        
         }
     }

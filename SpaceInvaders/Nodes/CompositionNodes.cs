@@ -68,7 +68,7 @@ namespace SpaceInvaders
       if (typeof(TComposition) == typeof(MovableComposition))
       {
         return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
-               entity.HasComponent<PhysicsComponent>();
+               entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>();
       }
 
       if (typeof(TComposition) == typeof(PlayerComposition))
@@ -111,6 +111,7 @@ namespace SpaceInvaders
           (composition as MovableComposition).Position = entity.GetComponent<PositionComponent>();
           (composition as MovableComposition).Render = entity.GetComponent<RenderComponent>();
           (composition as MovableComposition).Physic = entity.GetComponent<PhysicsComponent>();         
+          (composition as MovableComposition).Life = entity.GetComponent<LifeComponent>();         
         
         return composition;
       }
