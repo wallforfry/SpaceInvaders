@@ -6,6 +6,7 @@
         public PositionComponent Position { get; set; }       
         public PhysicsComponent Physic { get; set; }
         public LifeComponent Life { get; set; }
-        public FireComponent Fire { get; set; }
+        public FireComponent Fire { get; set; }       
+        public TypeComponent TypeComponent { get; set; }
     }
 }

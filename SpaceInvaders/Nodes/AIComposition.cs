@@ -8,5 +8,6 @@
         public LifeComponent Life { get; set; }
         public FireComponent Fire { get; set; }
         public EnemyBlockComponent Enemy { get; set; }
+        public TypeComponent TypeComponent { get; set; }
     }
 }

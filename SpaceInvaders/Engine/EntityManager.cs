@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Security.Policy;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
@@ -15,7 +16,12 @@ namespace SpaceInvaders
         }
         
         Entity this[int index] => _entities[index];
- 
+
+        public Dictionary<int, Entity> GetEntities()
+        {
+            return this._entities;
+        }
+        
         // Entités, indexés par leur ID unique
         private Dictionary<int, Entity> _entities;
  

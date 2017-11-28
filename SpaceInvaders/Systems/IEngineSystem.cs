@@ -4,6 +4,6 @@ namespace SpaceInvaders
 {
     public interface IEngineSystem : ISystem
     {
-        void Update(Engine gameEngine);
+        void Update(Engine gameEngine, Graphics graphics);
     }
 }

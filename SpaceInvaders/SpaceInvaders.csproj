@@ -54,10 +54,10 @@
     <Compile Include="Components\PhysicsComponent.cs" />
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\ShapeComponent.cs" />
+    <Compile Include="Components\TypeComponent.cs" />
     <Compile Include="Engine\Engine.cs" />
     <Compile Include="Engine\Entity.cs" />
     <Compile Include="Engine\EntityManager.cs" />
-    <Compile Include="Engine\GameEngineSystem.cs" />
     <Compile Include="Engine\GameState.cs" />
     <Compile Include="Engine\KeyboardHelper.cs" />
     <Compile Include="Engine\TypeOfObject.cs" />
@@ -71,12 +71,14 @@
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Nodes\AIComposition.cs" />
+    <Compile Include="Nodes\CollisionComposition.cs" />
     <Compile Include="Nodes\CompositionNodes.cs" />
     <Compile Include="Nodes\MovableComposition.cs" />
     <Compile Include="Nodes\PlayerComposition.cs" />
     <Compile Include="Nodes\RenderComposition.cs" />
     <Compile Include="Systems\AIInputSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
+    <Compile Include="Systems\GameEngineSystem.cs" />
     <Compile Include="Systems\IEngineSystem.cs" />
     <Compile Include="Systems\ImageRenderSystem.cs" />
     <Compile Include="Systems\ISystem.cs" />

@@ -6,6 +6,7 @@
         CONTROLABLE,
         AI,
         STATIC,
-        MISSILE
+        MISSILE,
+        MISSILE_IA,
     }
 }

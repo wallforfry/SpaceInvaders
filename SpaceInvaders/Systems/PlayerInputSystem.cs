@@ -8,7 +8,7 @@ using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
-    public class PlayerInputSystem : IEngineSystem
+    public class PlayerInputSystem : IPhysicsSystem
     {
         private CompositionNodes<PlayerComposition> _playerNodes;
         
@@ -17,13 +17,13 @@ namespace SpaceInvaders
             _playerNodes = gameInstance.WorldEntityManager.GetNodes<PlayerComposition>();
         }
         
-        public void Update(Engine gameEngine)
+        public void Update(Engine gameEngine, double deltaT)
         {                     
             Initialize(gameEngine);
             
             foreach (var node in _playerNodes.Nodes.ToArray())
             {
-                if (node.Physic.TypeOfObject == TypeOfObject.CONTROLABLE)
+                if (node.TypeComponent.TypeOfObject == TypeOfObject.CONTROLABLE)
                 {
                     if (KeyboardHelper.isPressed(Keys.Right))
                     {
@@ -48,7 +48,7 @@ namespace SpaceInvaders
                     {                       
                         if (node.Fire.Entity == null || !node.Fire.Entity.GetComponent<LifeComponent>().IsAlive)
                         {
-                            node.Fire.Entity = gameEngine.newMissile(node.Position.X + node.Render.Image.Width / 2, node.Position.Y, -2);
+                            node.Fire.Entity = gameEngine.newPlayerMissile(node);
                         }
 
                     }

@@ -3,6 +3,8 @@
     public enum GameState
     {
         PAUSE,
-        PLAY
+        PLAY,
+        WIN,
+        GAME_OVER
     }
 }

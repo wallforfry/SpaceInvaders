@@ -6,7 +6,7 @@ using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
-    public class AIInputSystem : IEngineSystem
+    public class AIInputSystem : IPhysicsSystem
     {
         public void Update()
         {
@@ -20,7 +20,7 @@ namespace SpaceInvaders
             _aiNodes= gameInstance.WorldEntityManager.GetNodes<AIComposition>();               
         }
 
-        public void Update(Engine gameEngine)
+        public void Update(Engine gameEngine, double deltaT)
         {
             Initialize(gameEngine);
             
@@ -29,7 +29,7 @@ namespace SpaceInvaders
             
             foreach (var node in _aiNodes.Nodes.ToArray())
             {
-                if (node.Physic.TypeOfObject == TypeOfObject.AI)
+                if (node.TypeComponent.SourceType == TypeOfObject.AI)
                 {
                     if (node.Position.X > limitX - node.Render.Image.Width)
                     {
@@ -61,8 +61,7 @@ namespace SpaceInvaders
                 {
                     if (node.Fire.Entity == null || !node.Fire.Entity.GetComponent<LifeComponent>().IsAlive)
                     {
-                        node.Fire.Entity = gameEngine.newMissile(node.Position.X + node.Render.Image.Width / 2,
-                            node.Position.Y, 2);
+                        node.Fire.Entity = gameEngine.newAIMissile(node);
                     }
                 }
 

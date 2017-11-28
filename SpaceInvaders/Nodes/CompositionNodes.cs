@@ -74,16 +74,25 @@ namespace SpaceInvaders
       if (typeof(TComposition) == typeof(PlayerComposition))
       {
         return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
-               entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>() && entity.HasComponent<FireComponent>();
+               entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>() && 
+               entity.HasComponent<FireComponent>() && entity.HasComponent<TypeComponent>() && entity.GetComponent<TypeComponent>().TypeOfObject == TypeOfObject.CONTROLABLE;
       }
 
       if (typeof(TComposition) == typeof(AIComposition))
       {
         return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
                entity.HasComponent<PhysicsComponent>() && entity.HasComponent<LifeComponent>() &&
-               entity.HasComponent<FireComponent>() && entity.HasComponent<EnemyBlockComponent>();
+               entity.HasComponent<FireComponent>() && entity.HasComponent<EnemyBlockComponent>()
+               && entity.HasComponent<TypeComponent>();
       }
 
+      
+      if (typeof(TComposition) == typeof(CollisionComposition))
+      {
+        return entity.HasComponent<PositionComponent>() && entity.HasComponent<RenderComponent>() &&
+               entity.HasComponent<LifeComponent>() && entity.HasComponent<TypeComponent>();
+      }
+      
       return false;
     }
 
@@ -125,7 +134,8 @@ namespace SpaceInvaders
           (composition as PlayerComposition).Render = entity.GetComponent<RenderComponent>();
           (composition as PlayerComposition).Physic = entity.GetComponent<PhysicsComponent>(); 
           (composition as PlayerComposition).Life = entity.GetComponent<LifeComponent>(); 
-          (composition as PlayerComposition).Fire = entity.GetComponent<FireComponent>();        
+          (composition as PlayerComposition).Fire = entity.GetComponent<FireComponent>();                
+          (composition as PlayerComposition).TypeComponent = entity.GetComponent<TypeComponent>();    
         
         return composition;
       }
@@ -141,6 +151,20 @@ namespace SpaceInvaders
         (composition as AIComposition).Life = entity.GetComponent<LifeComponent>(); 
         (composition as AIComposition).Fire = entity.GetComponent<FireComponent>();        
         (composition as AIComposition).Enemy = entity.GetComponent<EnemyBlockComponent>();        
+        (composition as AIComposition).TypeComponent= entity.GetComponent<TypeComponent>();    
+        
+        return composition;
+      }
+      
+      if (typeof(TComposition) == typeof(CollisionComposition))       
+      {
+        TComposition composition = Activator.CreateInstance<CollisionComposition>() as TComposition;
+
+        composition.Owner = entity;
+        (composition as CollisionComposition).Position = entity.GetComponent<PositionComponent>();
+        (composition as CollisionComposition).Render = entity.GetComponent<RenderComponent>(); 
+        (composition as CollisionComposition).Life = entity.GetComponent<LifeComponent>();  
+        (composition as CollisionComposition).TypeComponent= entity.GetComponent<TypeComponent>();    
         
         return composition;
       }
