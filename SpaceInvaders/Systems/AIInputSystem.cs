@@ -29,7 +29,7 @@ namespace SpaceInvaders
             
             foreach (var node in _aiNodes.Nodes.ToArray())
             {
-                if (node.TypeComponent.SourceType == TypeOfObject.AI)
+                if (node.TypeComponent.TypeOfObject == TypeOfObject.AI)
                 {
                     if (node.Position.X > limitX - node.Render.Image.Width)
                     {

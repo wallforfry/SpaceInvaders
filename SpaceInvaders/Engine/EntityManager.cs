@@ -64,6 +64,12 @@ namespace SpaceInvaders
             _entities.Remove(id);
             return true;
         }
+
+        public void ClearGame()
+        {
+            this._entities.Clear();
+            this._components.Clear();
+        }
  
         // Gestion de la composition d'une entité
         public TComponent CreateComponent<TComponent>(int entityId)

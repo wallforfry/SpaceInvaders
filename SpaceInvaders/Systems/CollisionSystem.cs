@@ -32,27 +32,37 @@ namespace SpaceInvaders
                     foreach (var node2 in _collisionNodes.Nodes.ToArray())
                     {
                         if (node.Owner.Id != node2.Owner.Id)
-                        {
-                            // Test qu'un missile IA ne détruit pas celui qui le lance
-                            if (!(node.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
-                                 node2.TypeComponent.TypeOfObject != TypeOfObject.AI) ||
-                                !(node2.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
-                                 node.TypeComponent.TypeOfObject != TypeOfObject.AI))                                                               
-                            {                            
+                        {                           
                             if (node2.Life.IsAlive)
+                            {
+                                if (node2.Position.X >= node.Position.X &&
+                                    node2.Position.X <= node.Position.X + node.Render.Image.Width)
                                 {
-                                    if (node2.Position.X >= node.Position.X &&
-                                        node2.Position.X <= node.Position.X + node.Render.Image.Width)
+                                    if (node2.Position.Y >= node.Position.Y && node2.Position.Y <=
+                                        node.Position.Y + node.Render.Image.Height)
                                     {
-                                        if (node2.Position.Y >= node.Position.Y && node2.Position.Y <=
-                                            node.Position.Y + node.Render.Image.Height)
+                                        if ((node.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
+                                             node2.TypeComponent.TypeOfObject == TypeOfObject.AI) ||
+                                            (node2.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
+                                             node.TypeComponent.TypeOfObject == TypeOfObject.AI))
+                                        {            
+                                            //AI Friendly Fire
+                                            break;
+                                        }
+                                        if (node.TypeComponent.TypeOfObject == TypeOfObject.AI &&
+                                            node2.TypeComponent.TypeOfObject == TypeOfObject.AI)
                                         {
+                                            //AI to AI Collision
+                                            break;
+                                        }
+                                        else
+                                        {                                           
                                             TestCollision(node, node2);
                                             break;
                                         }
                                     }
                                 }
-                            }
+                            }                                                            
                         }
                     }
                 }
@@ -94,6 +104,7 @@ namespace SpaceInvaders
                                             DeletePixel(node2.Render.Image, pX2, pY2, Color.Transparent);
                                         
                                         RemoveLife(node, node2);
+                                        Console.WriteLine(node.TypeComponent.TypeOfObject.ToString() + " VS "+ node2.TypeComponent.TypeOfObject.ToString());                                
                                         return;
                                     }
 

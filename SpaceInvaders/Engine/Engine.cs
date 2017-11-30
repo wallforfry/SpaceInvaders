@@ -23,34 +23,9 @@ namespace SpaceInvaders
 
         public Engine(Size gameSize)
         {
-            GameSize = gameSize;                      
-            WorldEntityManager = new EntityManager();
+            GameSize = gameSize;             
+            WorldEntityManager = new EntityManager();            
             
-            /////SpaceShip////
-            SpaceShip();                     
-            
-            //////Enemy///////
-            Enemy(-100,30);
-            Enemy(-50,30);
-            Enemy(0,30);
-            Enemy(50,30);
-            Enemy(100,30);
-            
-            Enemy(-100,0);
-            Enemy(-50,0);
-            Enemy(0,0);
-            Enemy(50,0);
-            Enemy(100,0);
-            
-            //////Bunker//////
-            
-            Bunker(gameSize.Width / 2 - 300);
-            Bunker(gameSize.Width / 2 - 50);
-            Bunker(gameSize.Width / 2 + 200);
-            
-            
-
-
             ImageRenderSystem renderSystem = new ImageRenderSystem();
             renderSystem.Initialize(this);
             systemsList.Add(renderSystem);
@@ -74,7 +49,11 @@ namespace SpaceInvaders
             GameEngineSystem gameSystem = new GameEngineSystem();
             systemsList.Add(gameSystem);
             
-            CurrentGameState = GameState.PLAY;
+            EnemyGenerationSystem enemyGenerationSystem = new EnemyGenerationSystem();
+            enemyGenerationSystem.Initialize(this);
+            systemsList.Add(enemyGenerationSystem);
+            
+            CreateGame();
         }
 
         /*public void newBall()
@@ -110,7 +89,7 @@ namespace SpaceInvaders
             c2.Position = new Vecteur2D(300.0,550.0);
 
             LifeComponent c3 = entity.CreateComponent<LifeComponent>();
-            c3.Lives = 4;
+            c3.Lives = 2;
 
             PhysicsComponent c7 = entity.CreateComponent<PhysicsComponent>();
             c7.Vector = new Vecteur2D(1,0);
@@ -122,7 +101,15 @@ namespace SpaceInvaders
             FireComponent c9 = entity.CreateComponent<FireComponent>();  
         }
 
-        public void Enemy(int xShift, int yShift)
+        public void EnemyLine(double xShift, double yShift, double speedX)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Enemy(xShift+i*50, yShift, speedX);
+            }
+        }
+        
+        public void Enemy(double xShift, double yShift, double speedX)
         {
             Entity enemy = WorldEntityManager.CreateEntity();             
 
@@ -130,14 +117,14 @@ namespace SpaceInvaders
             c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
 
             PositionComponent c5 = enemy.CreateComponent<PositionComponent>();
-            c5.Position = new Vecteur2D(300.0+xShift,100.0+yShift);
+            c5.Position = new Vecteur2D(xShift,yShift);
 
             LifeComponent c6 = enemy.CreateComponent<LifeComponent>();
-            c6.Lives = 4;
+            c6.Lives = 1;
             
             PhysicsComponent c8 = enemy.CreateComponent<PhysicsComponent>();
-            //c8.Vector = new Vecteur2D(0.5, 15);
-            c8.Vector = new Vecteur2D(0, 15);
+            c8.Vector = new Vecteur2D(speedX, c4.Image.Height);
+            //c8.Vector = new Vecteur2D(0, c4.Image.Height);
             c8.Move = new Vecteur2D();
             
             TypeComponent c7 = enemy.CreateComponent<TypeComponent>();
@@ -225,20 +212,8 @@ namespace SpaceInvaders
         }
 
         public void Draw(Graphics graphics)
-        {
-            if(CurrentGameState == GameState.PAUSE)
-            {
-                String message = "Pause";
-                graphics.DrawString(message,new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel), 
-                    new SolidBrush(Color.Black), new Point(GameSize.Width/2 - message.Length, GameSize.Height/2));                                        
-            }
-            else if(CurrentGameState == GameState.GAME_OVER)
-            {
-                String message = "Game Over :(";
-                graphics.DrawString(message, new Font("Times New Roman", 24, FontStyle.Bold, GraphicsUnit.Pixel),
-                    new SolidBrush(Color.Black), new Point(GameSize.Width / 2 - message.Length, GameSize.Height / 2));
-            }
-            else            
+        {  
+            if(CurrentGameState == GameState.PLAY)            
             {
                 foreach (var system in systemsList)
                 {
@@ -275,9 +250,23 @@ namespace SpaceInvaders
             
         }
         
-        void CreateGame()
-        {
-          
+        public void CreateGame()
+        {                                 
+            
+            /////SpaceShip////
+            SpaceShip();                     
+            
+            //////Enemy///////
+            EnemyLine(200, 30, 0.5);           
+            EnemyLine(200,60, 0.5);
+            
+            //////Bunker//////
+            
+            Bunker(GameSize.Width / 2 - 300);
+            Bunker(GameSize.Width / 2 - 50);
+            Bunker(GameSize.Width / 2 + 200);                                 
+            
+            CurrentGameState = GameState.PLAY;
         }
 
         public List<Entity> getEntity()

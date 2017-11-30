@@ -78,6 +78,7 @@
     <Compile Include="Nodes\RenderComposition.cs" />
     <Compile Include="Systems\AIInputSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
+    <Compile Include="Systems\EnemyGenerationSystem.cs" />
     <Compile Include="Systems\GameEngineSystem.cs" />
     <Compile Include="Systems\IEngineSystem.cs" />
     <Compile Include="Systems\ImageRenderSystem.cs" />
