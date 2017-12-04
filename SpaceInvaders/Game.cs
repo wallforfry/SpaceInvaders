@@ -122,32 +122,7 @@ namespace SpaceInvaders
         /// Update game
         /// </summary>
         public void Update(double deltaT)
-        {
-            /*// add new game objects
-            gameObjects.UnionWith(pendingNewGameObjects);
-            pendingNewGameObjects.Clear();
-
-
-            // if space is pressed
-            if (keyPressed.Contains(Keys.Space))
-            {
-                // create new BalleQuiTombe
-                GameObject newObject = new BalleQuiTombe(gameSize.Width / 2, 0);
-                // add it to the game
-                AddNewGameObject(newObject);
-                // release key space (no autofire)
-                ReleaseKey(Keys.Space);
-            }                        
-
-            // update each game object
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.Update(this, deltaT);
-            }
-
-            // remove dead objects
-            gameObjects.RemoveWhere(gameObject => !gameObject.IsAlive());
-            */
+        {          
             gameEngine.Update(deltaT);
         }
         #endregion
