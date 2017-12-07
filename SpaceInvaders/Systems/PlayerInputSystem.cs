@@ -8,6 +8,7 @@ using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
+    //Gère les entrés clavier du joueur
     public class PlayerInputSystem : IPhysicsSystem
     {
         private CompositionNodes<PlayerComposition> _playerNodes;
@@ -39,9 +40,28 @@ namespace SpaceInvaders
                         else
                             node.Physic.Move.X = 0;
                     }
+                    
+                    //Les lignes suivantes permettent d'ajouter au joueur un déplacement vertical (pour le debug c'est plus simple :) )
+                    
+                    /*
+                    else if (KeyboardHelper.isPressed(Keys.Down))
+                    {
+                        if(node.Position.Y < gameEngine.GameSize.Height - node.Render.Image.Height)
+                            node.Physic.Move.Y = node.Physic.SpeedY;
+                        else
+                            node.Physic.Move.Y = 0;                        
+                    }
+                    else if (KeyboardHelper.isPressed(Keys.Up))
+                    {
+                        if (node.Position.Y > 0)
+                            node.Physic.Move.Y = -node.Physic.SpeedY;
+                        else
+                            node.Physic.Move.Y = 0;
+                    }//*/
                     else
                     {
                         node.Physic.Move.X = 0;
+                        node.Physic.Move.Y = 0;
                     }
 
                     if (KeyboardHelper.isPressed(Keys.Space))
@@ -51,10 +71,7 @@ namespace SpaceInvaders
                             node.Fire.Entity = gameEngine.newPlayerMissile(node);
                         }
 
-                    }
-                    
-                    //KeyboardHelper.ReleaseKey(Keys.Left);
-                    //KeyboardHelper.ReleaseKey(Keys.Right);
+                    }                    
                 }
             }
 

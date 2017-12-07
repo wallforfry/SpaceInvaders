@@ -6,6 +6,7 @@ namespace SpaceInvaders
     {
         public int Lives { get; set; }        
         public bool IsAlive => Lives > 0;
+        public bool IsShoot { get; set; }
         
         public bool Equals(IComponent other)
         {

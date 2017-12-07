@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Drawing;
+using System.Threading;
 using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
+    
+    //Classe non utilisé mais prévue pour générer plusieurs blocs d'ennemis à la suite
     public class EnemyGenerationSystem : IRenderSystem
     {
         
         private CompositionNodes<AIComposition> _enemyNodes;
-        private int enemyApparitionLimit = 40;
+        private int enemyApparitionLimit = 57;
 
         public void Update()
         {
@@ -24,29 +27,34 @@ namespace SpaceInvaders
         {
             Initialize(gameInstance);
             
-            bool addBlock = false;
-            int minPositionX = gameInstance.GameSize.Width;
-            double positionY = 0;
-            double speedX = 0.0;
+            AIComposition topLeftEnemy = FindTopLeftEnemy(gameInstance);
+
+            if (topLeftEnemy.Position.X  < 10)
+            {
+              gameInstance.EnemyLine(topLeftEnemy.Position.X, 0, topLeftEnemy.Physic.SpeedX);              
+            }
+        
+        }
+
+        private AIComposition FindTopLeftEnemy(Engine gameInstance)
+        {
+            AIComposition topLeftEnemy = null;
+            double minX = gameInstance.GameSize.Width;
+            double minY = gameInstance.GameSize.Height;
             
             foreach (var node in _enemyNodes.Nodes.ToArray())
-            {                                
-                if (node.Position.Y > enemyApparitionLimit && node.Position.X < 1)
+            {
+                if (node.Position.X <= minX && node.Position.Y <= minY)
                 {
-                    addBlock = true;
-                    minPositionX = (int) node.Position.X;
-                    speedX = node.Physic.SpeedX;
-                    positionY = node.Position.Y;
-                    break;                    
+                    topLeftEnemy = node;
+                    minX = node.Position.X;
+                    minY = node.Position.Y;
                 }    
             }
+            if(minX < 5)
+                Console.WriteLine(minX+" : "+minY);
 
-            if (addBlock)
-            {
-                //Add line
-                gameInstance.EnemyLine(minPositionX,positionY, speedX);
-                return;
-            }
+            return topLeftEnemy;
         }
     }
 }

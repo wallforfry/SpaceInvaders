@@ -6,6 +6,9 @@ using System.Drawing;
 
 namespace SpaceInvaders
 {
+    
+    //Classe du projet de base
+    
     /// <summary>
     /// Dummy class for demonstration
     /// </summary>

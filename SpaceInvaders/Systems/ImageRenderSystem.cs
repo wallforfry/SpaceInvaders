@@ -7,6 +7,7 @@ using SpaceInvaders.Nodes;
 
 namespace SpaceInvaders
 {
+    //Effectue le rendu des entités possèdant une image
     public class ImageRenderSystem : IRenderSystem
     {
         private CompositionNodes<RenderComposition> _renderNodes;
@@ -19,44 +20,13 @@ namespace SpaceInvaders
         
         public void Update(Engine gameInstance, Graphics graphics)
         {
-            /*foreach (var entity in gameInstance.getEntity())
-            {
-                RenderComponent renderComponent = null;
-                PositionComponent positionComponent = null;
-                LifeComponent lifeComponent = null;     
-                
-                renderComponent = entity.GetComponent<RenderComponent>();
-                positionComponent = entity.GetComponent<PositionComponent>();
-                lifeComponent = entity.GetComponent<LifeComponent>();                           
-                
-                if (renderComponent != null && positionComponent != null)
-                {
-                    if (lifeComponent != null)
-                    {
-                        if (lifeComponent.IsAlive)
-                        {
-                            graphics.DrawImage(renderComponent.Image, (float) positionComponent.X,
-                                (float) positionComponent.Y);
-                        }
-                    }
-                    else
-                    {                        
-                        graphics.DrawImage(renderComponent.Image, (float)positionComponent.X, (float)positionComponent.Y, renderComponent.Image.Width, renderComponent.Image.Height);
-                    }                                        
-                }
-            }*/
             Initialize(gameInstance);
             
             foreach (var node in _renderNodes.Nodes.ToArray())
             {
                 if (node.Life.IsAlive)
                 {
-                    graphics.DrawImage(node.Render.Image, (float) node.Position.X, (float) node.Position.Y);
-                    if (node.Position.Y < 0)
-                    {
-                        node.Life.Lives = 0;
-                        gameInstance.WorldEntityManager.DestroyEntity(node.Owner.Id);
-                    }
+                    graphics.DrawImage(node.Render.Image, (float) node.Position.X, (float) node.Position.Y);                    
                 }
             }                                                           
         }

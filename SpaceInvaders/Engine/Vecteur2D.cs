@@ -30,7 +30,6 @@ namespace SpaceInvaders
                 return Math.Sqrt(x*x+y*y);
             }
 
-            private set { }
         }
 
         public static Vecteur2D operator+(Vecteur2D a, Vecteur2D b)

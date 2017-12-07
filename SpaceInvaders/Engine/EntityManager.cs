@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Security.Policy;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
 
@@ -34,6 +35,7 @@ namespace SpaceInvaders
         public Entity CreateEntity()
         {
             Random rdm = new Random();
+            Thread.Sleep(10);
             int uid = DateTime.Now.Second+DateTime.Now.Millisecond.GetHashCode()+rdm.Next();
             Entity entity;
             if (_entities.ContainsKey(uid))
@@ -45,7 +47,15 @@ namespace SpaceInvaders
             {
                 entity = new Entity(uid);
             }
-            _entities.Add(uid, entity);
+            try
+            {
+                _entities.Add(uid, entity);
+            }
+            catch (System.ArgumentException)
+            {
+                Console.WriteLine("Uid de l'entité existe déjà :(");
+            }
+            
             return entity;
         }
 
@@ -143,7 +153,7 @@ namespace SpaceInvaders
         }
  
         // Retourne des "vues" sur les entités dont la composition
-        // correspond à TComposition (plus de détails sur cette partie plus tard)
+        // correspond à TComposition ( les fameux NODES générés à la volée)
         public CompositionNodes<TComposition> GetNodes<TComposition> ()
             where TComposition : CompositionBase, new()
         {

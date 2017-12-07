@@ -21,10 +21,14 @@ namespace SpaceInvaders
         
         public EntityManager WorldEntityManager { get; set; }
 
+        //Constructeur
         public Engine(Size gameSize)
         {
             GameSize = gameSize;             
-            WorldEntityManager = new EntityManager();            
+            WorldEntityManager = new EntityManager();
+            
+            
+            //Création des systèmes
             
             ImageRenderSystem renderSystem = new ImageRenderSystem();
             renderSystem.Initialize(this);
@@ -51,8 +55,9 @@ namespace SpaceInvaders
             
             EnemyGenerationSystem enemyGenerationSystem = new EnemyGenerationSystem();
             enemyGenerationSystem.Initialize(this);
-            systemsList.Add(enemyGenerationSystem);
+            //systemsList.Add(enemyGenerationSystem);
             
+            //Peuplement du jeu
             CreateGame();
         }
 
@@ -78,6 +83,7 @@ namespace SpaceInvaders
         }
         */
 
+        //Création d'un player
         public void SpaceShip()
         {
             Entity entity = WorldEntityManager.CreateEntity();             
@@ -86,13 +92,13 @@ namespace SpaceInvaders
             c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
 
             PositionComponent c2 = entity.CreateComponent<PositionComponent>();
-            c2.Position = new Vecteur2D(300.0,550.0);
+            c2.Position = new Vecteur2D(300.0,600.0);
 
             LifeComponent c3 = entity.CreateComponent<LifeComponent>();
-            c3.Lives = 2;
+            c3.Lives = 10;
 
             PhysicsComponent c7 = entity.CreateComponent<PhysicsComponent>();
-            c7.Vector = new Vecteur2D(1,0);
+            c7.Vector = new Vecteur2D(1,1);
             c7.Move = new Vecteur2D();
             
             TypeComponent c5 = entity.CreateComponent<TypeComponent>();
@@ -101,30 +107,66 @@ namespace SpaceInvaders
             FireComponent c9 = entity.CreateComponent<FireComponent>();  
         }
 
+        //Création d'une ligne d'ennemis
         public void EnemyLine(double xShift, double yShift, double speedX)
         {
-            for (int i = 0; i < 5; i++)
+            int numberOfEnemy = 5;
+            
+            Random rdm = new Random();
+            int ship = rdm.Next(7);
+            Bitmap image;
+            
+            switch (ship)
             {
-                Enemy(xShift+i*50, yShift, speedX);
+                default:               
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship1);
+                    break;                    
+                case 1:                    
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship2);
+                    break;
+                case 2:                    
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship3);
+                    break;
+                case 3:
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship4);
+                    break;
+                case 4:
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
+                    break;
+                case 5:
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship6);
+                    break;
+                case 6:
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship7);
+                    break;
+                case 7:
+                    image = new Bitmap(SpaceInvaders.Properties.Resources.ship8);
+                    break;
+            }
+            
+            for (int i = 1; i <= numberOfEnemy; i++)
+            {                
+                Enemy(xShift + (400/numberOfEnemy) * i, yShift, speedX, new Bitmap(image));
             }
         }
         
-        public void Enemy(double xShift, double yShift, double speedX)
+        //Création d'un ennemi
+        public void Enemy(double xShift, double yShift, double speedX, Bitmap image)
         {
-            Entity enemy = WorldEntityManager.CreateEntity();             
-
+            Entity enemy = WorldEntityManager.CreateEntity();                                                
+            
             RenderComponent c4 = enemy.CreateComponent<RenderComponent>();
-            c4.Image = new Bitmap(SpaceInvaders.Properties.Resources.ship5);
+            c4.Image = image;
 
             PositionComponent c5 = enemy.CreateComponent<PositionComponent>();
             c5.Position = new Vecteur2D(xShift,yShift);
 
             LifeComponent c6 = enemy.CreateComponent<LifeComponent>();
-            c6.Lives = 1;
+            c6.Lives = image.Height * image.Width / 10;
+            c6.Lives = 2;
             
             PhysicsComponent c8 = enemy.CreateComponent<PhysicsComponent>();
-            c8.Vector = new Vecteur2D(speedX, c4.Image.Height);
-            //c8.Vector = new Vecteur2D(0, c4.Image.Height);
+            c8.Vector = new Vecteur2D(speedX, 30);
             c8.Move = new Vecteur2D();
             
             TypeComponent c7 = enemy.CreateComponent<TypeComponent>();
@@ -136,6 +178,7 @@ namespace SpaceInvaders
             FireComponent c10 = enemy.CreateComponent<FireComponent>();
         }
         
+        //Création d'un bunker
         public void Bunker(double x)
         {
             Entity bunker = WorldEntityManager.CreateEntity();
@@ -144,7 +187,7 @@ namespace SpaceInvaders
             c1.Image = new Bitmap(SpaceInvaders.Properties.Resources.bunker2);
 
             PositionComponent c2 = bunker.CreateComponent<PositionComponent>();
-            c2.Position = new Vecteur2D(x, 480.0);
+            c2.Position = new Vecteur2D(x, 550.0);
 
             PhysicsComponent c3 = bunker.CreateComponent<PhysicsComponent>();
             c3.Vector = new Vecteur2D(0,0);
@@ -157,6 +200,8 @@ namespace SpaceInvaders
             c4.Lives = c1.NumberOfPixel;        
         }   
         
+        
+        //Création d'un missile ennemi
         public Entity newAIMissile(AIComposition node)
          {
             double x = node.Position.X + node.Render.Image.Width / 2;
@@ -173,7 +218,6 @@ namespace SpaceInvaders
              
             TypeComponent c5 = entity.CreateComponent<TypeComponent>();      
             c5.TypeOfObject = TypeOfObject.MISSILE_IA;
-            c5.SourceType = node.TypeComponent.TypeOfObject;
              
             PositionComponent c3 = entity.CreateComponent<PositionComponent>();
             c3.Position = new Vecteur2D(x,y);
@@ -184,11 +228,12 @@ namespace SpaceInvaders
             return entity;
         }
         
+        //Création d'un missile du joueur
         public Entity newPlayerMissile(PlayerComposition node)
         {
             double x = node.Position.X + node.Render.Image.Width / 2;
             double y = node.Position.Y;
-            double speedY = -2;
+            double speedY = -3;
             
             Entity entity = WorldEntityManager.CreateEntity();
             LifeComponent c1 = entity.CreateComponent<LifeComponent>();
@@ -200,7 +245,6 @@ namespace SpaceInvaders
             
             TypeComponent c5 = entity.CreateComponent<TypeComponent>();
             c5.TypeOfObject = TypeOfObject.MISSILE;
-            c5.SourceType = node.TypeComponent.TypeOfObject;
             
             PositionComponent c3 = entity.CreateComponent<PositionComponent>();
             c3.Position = new Vecteur2D(x,y);
@@ -211,6 +255,7 @@ namespace SpaceInvaders
             return entity;
         }
 
+        //Traitement des systems de rendu et ceux de moteurs influant sur l'affichage
         public void Draw(Graphics graphics)
         {  
             if(CurrentGameState == GameState.PLAY)            
@@ -234,6 +279,7 @@ namespace SpaceInvaders
 
         }
 
+        //Traitement des systems de physique du jeu
         public void Update(double deltaT)
         {
             
@@ -250,15 +296,20 @@ namespace SpaceInvaders
             
         }
         
+        
+        //Création d'une partie selon ce modèle
         public void CreateGame()
         {                                 
+            WorldEntityManager.ClearGame();
             
             /////SpaceShip////
             SpaceShip();                     
             
             //////Enemy///////
-            EnemyLine(200, 30, 0.5);           
-            EnemyLine(200,60, 0.5);
+            EnemyLine(0, 0, 0.4);           
+            EnemyLine(0,40, 0.4);
+            EnemyLine(0,80, 0.4);
+            //EnemyLine(0,120, 0.5);
             
             //////Bunker//////
             

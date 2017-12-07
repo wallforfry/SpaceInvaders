@@ -29,18 +29,25 @@ namespace SpaceInvaders
             {
                 if (node.Life.IsAlive)
                 {
+                    node.Life.IsShoot = false;
+                    
                     foreach (var node2 in _collisionNodes.Nodes.ToArray())
                     {
                         if (node.Owner.Id != node2.Owner.Id)
                         {                           
                             if (node2.Life.IsAlive)
                             {
+                                node2.Life.IsShoot = false;
+                                
+                                //Test de l'appartenance au rectangle sur l'axe X
                                 if (node2.Position.X >= node.Position.X &&
                                     node2.Position.X <= node.Position.X + node.Render.Image.Width)
-                                {
+                                {                                    
+                                    //Test de l'appartenance au rectangle sur l'axe Y
                                     if (node2.Position.Y >= node.Position.Y && node2.Position.Y <=
                                         node.Position.Y + node.Render.Image.Height)
                                     {
+                                        //On ignore certains types de collisions
                                         if ((node.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
                                              node2.TypeComponent.TypeOfObject == TypeOfObject.AI) ||
                                             (node2.TypeComponent.TypeOfObject == TypeOfObject.MISSILE_IA &&
@@ -56,21 +63,26 @@ namespace SpaceInvaders
                                             break;
                                         }
                                         else
-                                        {                                           
-                                            TestCollision(node, node2);
+                                        {                                       
+                                            //On test la collision pixel à pixel
+                                            TestCollision(node, node2, gameInstance);
                                             break;
                                         }
                                     }
                                 }
                             }                                                            
                         }
+                        if (node2.Life.IsShoot)
+                            node2.Life.Lives--;
                     }
+                    if(node.Life.IsShoot)
+                        node.Life.Lives--;
                 }
             }   
         }
 
 
-        void TestCollision(CollisionComposition node, CollisionComposition node2)
+        void TestCollision(CollisionComposition node, CollisionComposition node2, Engine gameInstance)
         {
             
             for (int y = 0; y < node.Render.Image.Height; y++)           
@@ -84,7 +96,6 @@ namespace SpaceInvaders
                         //Si pas pixel pas mort
                         if (color.A != 0)
                         {
-                            //TODO : Récupérer la position relative de l'autre pixel
                             int pX = (int) (node.Position.X + x);
                             int pY = (int) (node.Position.Y + y);
 
@@ -98,14 +109,26 @@ namespace SpaceInvaders
                                     Color color2 = node2.Render.Image.GetPixel(pX2, pY2);
                                     if (color2.A != 0)
                                     {
-                                        if(node.TypeComponent.TypeOfObject == TypeOfObject.STATIC)                                        
+                                        //Collision AI vs Bunker => Fin de partie
+                                        if ((node.TypeComponent.TypeOfObject == TypeOfObject.STATIC &&
+                                             node2.TypeComponent.TypeOfObject == TypeOfObject.AI) ||
+                                            (node2.TypeComponent.TypeOfObject == TypeOfObject.STATIC &&
+                                             node.TypeComponent.TypeOfObject == TypeOfObject.AI))
+                                        {
+                                            gameInstance.CurrentGameState = GameState.GAME_OVER;
+                                        }
+                                        
+                                        //Suppression pixel pour AI et bunker
+                                        if(node.TypeComponent.TypeOfObject == TypeOfObject.STATIC || node.TypeComponent.TypeOfObject == TypeOfObject.AI)                                        
                                             DeletePixel(node.Render.Image, x, y, Color.Transparent);
-                                        if(node2.TypeComponent.TypeOfObject == TypeOfObject.STATIC)
+                                        if(node2.TypeComponent.TypeOfObject == TypeOfObject.STATIC || node.TypeComponent.TypeOfObject == TypeOfObject.AI)
                                             DeletePixel(node2.Render.Image, pX2, pY2, Color.Transparent);
                                         
-                                        RemoveLife(node, node2);
-                                        Console.WriteLine(node.TypeComponent.TypeOfObject.ToString() + " VS "+ node2.TypeComponent.TypeOfObject.ToString());                                
-                                        return;
+                                        //RemoveLife(node, node2);
+                                        node.Life.IsShoot = true;
+                                        node2.Life.Lives--;
+                                        //Console.WriteLine(node.TypeComponent.TypeOfObject.ToString() + " VS "+ node2.TypeComponent.TypeOfObject.ToString());                                
+                                        //return;
                                     }
 
                                 }
@@ -120,6 +143,7 @@ namespace SpaceInvaders
             }
         }
 
+        //Retire une vie à chaque entité
         void RemoveLife(CollisionComposition node, CollisionComposition node2)
         {
             LifeComponent lifeComponent = node.Life;
@@ -128,6 +152,7 @@ namespace SpaceInvaders
             lifeComponent2.Lives -= 1;
         }
         
+        //Supprimer un pixel
         void DeletePixel(Bitmap image, int X, int Y, Color color)
         {
             image.SetPixel(X, Y, color);
