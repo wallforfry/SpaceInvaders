@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Security.Policy;
+﻿using System.Drawing;
+using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Systems
 {
     //System de rendu des entités sans images mais avec une shape. Non converti au fonctionnement avec les noeuds mais 
     //conservé si on souhaite ajouter une entité de ce genre
-    
+
     public class ShapeRenderSystem : IRenderSystem
     {
         public void Update()
         {
-            
         }
 
         public void Initialize(Engine gameInstance)
         {
-            
         }
 
         public void Update(Engine gameInstance, Graphics graphics)
@@ -40,7 +35,7 @@ namespace SpaceInvaders
     
                     graphics.DrawEllipse(shapeComponent.Pen, xmin, ymin, width, height);                    
                 }
-            }      */   
+            }      */
         }
     }
 }

@@ -1,89 +1,92 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
 using System.Diagnostics;
+using System.Drawing;
+using System.Windows.Forms;
+using SpaceInvaders.EngineFiles;
 
 namespace SpaceInvaders
 {
     public partial class GameForm : Form
     {
-
-        #region fields
-        /// <summary>
-        /// Instance of the game
-        /// </summary>
-        private Game game;
-
-        public static Graphics graphics;
-        
-        #region time management
-        /// <summary>
-        /// Game watch
-        /// </summary>
-        Stopwatch watch = new Stopwatch();
-
-        /// <summary>
-        /// Last update time
-        /// </summary>
-        long lastTime = 0;
-        #endregion
-           
-        #endregion
-
         #region constructor
+
         /// <summary>
-        /// Create form, create game
+        ///     Create form, create game
         /// </summary>
         public GameForm()
         {
             InitializeComponent();
-            game = Game.CreateGame(this.ClientSize);
+            game = Game.CreateGame(ClientSize);
             watch.Start();
             WorldClock.Start();
-
         }
+
+        #endregion
+
+        private void GameForm_Load(object sender, EventArgs e)
+        {
+        }
+
+        #region fields
+
+        /// <summary>
+        ///     Instance of the game
+        /// </summary>
+        private readonly Game game;
+
+        public static Graphics graphics;
+
+        #region time management
+
+        /// <summary>
+        ///     Game watch
+        /// </summary>
+        private readonly Stopwatch watch = new Stopwatch();
+
+        /// <summary>
+        ///     Last update time
+        /// </summary>
+        private long lastTime;
+
+        #endregion
+
         #endregion
 
         #region events
+
         /// <summary>
-        /// Paint event of the form, see msdn for help => paint game with double buffering
+        ///     Paint event of the form, see msdn for help => paint game with double buffering
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void GameForm_Paint(object sender, PaintEventArgs e)
         {
-            BufferedGraphics bg = BufferedGraphicsManager.Current.Allocate(e.Graphics, e.ClipRectangle);
-            Graphics g = bg.Graphics;
+            var bg = BufferedGraphicsManager.Current.Allocate(e.Graphics, e.ClipRectangle);
+            var g = bg.Graphics;
             g.Clear(Color.Red);
 
             graphics = g;
-            
+
             game.Draw(g);
 
             bg.Render();
             bg.Dispose();
-
         }
 
         /// <summary>
-        /// Tick event => update game
+        ///     Tick event => update game
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void WorldClock_Tick(object sender, EventArgs e)
         {
             // lets do 5 ms update to avoid quantum effects
-            int maxDelta = 5;
+            var maxDelta = 5;
 
             // get time with millisecond precision
-            long nt = watch.ElapsedMilliseconds;
+            var nt = watch.ElapsedMilliseconds;
             // compute ellapsed time since last call to update
-            double deltaT = (nt - lastTime);
+            double deltaT = nt - lastTime;
 
             for (; deltaT >= maxDelta; deltaT -= maxDelta)
                 game.Update(maxDelta / 1000.0);
@@ -94,34 +97,28 @@ namespace SpaceInvaders
             lastTime = nt;
 
             Invalidate();
-
         }
 
         /// <summary>
-        /// Key down event
+        ///     Key down event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void GameForm_KeyDown(object sender, KeyEventArgs e)
         {
-            Engine.keyPressed.Add(e.KeyCode);
+            Engine.KeyPressed.Add(e.KeyCode);
         }
 
         /// <summary>
-        /// Key up event
+        ///     Key up event
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void GameForm_KeyUp(object sender, KeyEventArgs e)
         {
-            Engine.keyPressed.Remove(e.KeyCode);
+            Engine.KeyPressed.Remove(e.KeyCode);
         }
 
         #endregion
-
-        private void GameForm_Load(object sender, EventArgs e)
-        {
-
-        }
     }
 }

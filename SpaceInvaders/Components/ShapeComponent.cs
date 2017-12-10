@@ -1,19 +1,21 @@
 ﻿using System.Drawing;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Components
 {
     public class ShapeComponent : IComponent
-    {        
-        public int Radius { get; set; }        
+    {
+        public int Radius { get; set; }
+
         public Pen Pen
         {
-            get { return (new Pen(Color.Black)); }
+            get { return new Pen(Color.Black); }
             private set { }
         }
 
         public bool Equals(IComponent other)
         {
-            return Radius.GetHashCode() == ((ShapeComponent) other).Radius.GetHashCode();
+            var shapeComponent = other as ShapeComponent;
+            return shapeComponent != null && Radius.GetHashCode() == shapeComponent.Radius.GetHashCode();
         }
     }
 }

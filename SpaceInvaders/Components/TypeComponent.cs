@@ -1,14 +1,15 @@
-﻿using System;
+﻿using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Components
 {
     public class TypeComponent : IComponent
     {
         public TypeOfObject TypeOfObject { get; set; }
-        
+
         public bool Equals(IComponent other)
         {
-            return TypeOfObject.GetHashCode() == ((TypeComponent) other).TypeOfObject.GetHashCode();
+            var typeComponent = other as TypeComponent;
+            return typeComponent != null && TypeOfObject.GetHashCode() == typeComponent.TypeOfObject.GetHashCode();
         }
     }
 }

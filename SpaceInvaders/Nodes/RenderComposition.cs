@@ -1,4 +1,6 @@
-﻿namespace SpaceInvaders.Nodes
+﻿using SpaceInvaders.Components;
+
+namespace SpaceInvaders.Nodes
 {
     // Les sous-types ajoutent des champs héritant de IComponent
     public class RenderComposition : CompositionBase

@@ -1,16 +1,15 @@
-﻿using System;
-
-namespace SpaceInvaders
+﻿namespace SpaceInvaders.Components
 {
     public class LifeComponent : IComponent
     {
-        public int Lives { get; set; }        
+        public int Lives { get; set; }
         public bool IsAlive => Lives > 0;
         public bool IsShoot { get; set; }
-        
+
         public bool Equals(IComponent other)
         {
-            return Lives.GetHashCode() == ((LifeComponent) other).Lives.GetHashCode();
+            var lifeComponent = other as LifeComponent;
+            return lifeComponent != null && Lives.GetHashCode() == lifeComponent.Lives.GetHashCode();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using System.Dynamic;
+﻿using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Components
 {
     public class PositionComponent : IComponent
     {
@@ -20,8 +20,8 @@ namespace SpaceInvaders
 
         public bool Equals(IComponent other)
         {
-            return Position.GetHashCode() == ((PositionComponent) other).Position.GetHashCode();
+            var positionComponent = other as PositionComponent;
+            return positionComponent != null && Position.GetHashCode() == positionComponent.Position.GetHashCode();
         }
     }
-            
 }

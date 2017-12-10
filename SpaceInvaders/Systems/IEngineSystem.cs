@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
+using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Systems
 {
     public interface IEngineSystem : ISystem
     {

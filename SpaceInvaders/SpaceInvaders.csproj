@@ -46,7 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\CompositionBase.cs" />
     <Compile Include="Components\EnemyBlockComponent.cs" />
     <Compile Include="Components\FireComponent.cs" />
     <Compile Include="Components\IComponent.cs" />
@@ -55,13 +54,13 @@
     <Compile Include="Components\PositionComponent.cs" />
     <Compile Include="Components\ShapeComponent.cs" />
     <Compile Include="Components\TypeComponent.cs" />
-    <Compile Include="Engine\Engine.cs" />
-    <Compile Include="Engine\Entity.cs" />
-    <Compile Include="Engine\EntityManager.cs" />
-    <Compile Include="Engine\GameState.cs" />
-    <Compile Include="Engine\KeyboardHelper.cs" />
-    <Compile Include="Engine\TypeOfObject.cs" />
-    <Compile Include="Engine\Vecteur2D.cs" />
+    <Compile Include="EngineFiles\Engine.cs" />
+    <Compile Include="EngineFiles\Entity.cs" />
+    <Compile Include="EngineFiles\EntityManager.cs" />
+    <Compile Include="EngineFiles\GameState.cs" />
+    <Compile Include="EngineFiles\KeyboardHelper.cs" />
+    <Compile Include="EngineFiles\TypeOfObject.cs" />
+    <Compile Include="EngineFiles\Vecteur2D.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -70,13 +69,14 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="Nodes\AIComposition.cs" />
+    <Compile Include="Nodes\AiComposition.cs" />
     <Compile Include="Nodes\CollisionComposition.cs" />
+    <Compile Include="Nodes\CompositionBase.cs" />
     <Compile Include="Nodes\CompositionNodes.cs" />
     <Compile Include="Nodes\MovableComposition.cs" />
     <Compile Include="Nodes\PlayerComposition.cs" />
     <Compile Include="Nodes\RenderComposition.cs" />
-    <Compile Include="Systems\AIInputSystem.cs" />
+    <Compile Include="Systems\AiInputSystem.cs" />
     <Compile Include="Systems\CollisionSystem.cs" />
     <Compile Include="Systems\EnemyGenerationSystem.cs" />
     <Compile Include="Systems\GameEngineSystem.cs" />

@@ -1,4 +1,6 @@
-﻿namespace SpaceInvaders
+﻿using SpaceInvaders.EngineFiles;
+
+namespace SpaceInvaders.Systems
 {
     public interface ISystem
     {

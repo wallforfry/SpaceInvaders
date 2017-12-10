@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
+﻿using System.Drawing;
+using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Systems
 {
     public interface IRenderSystem : ISystem
     {

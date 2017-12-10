@@ -1,35 +1,28 @@
 ﻿using System.Drawing;
-using System.Dynamic;
-using System.Windows.Forms;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Components
 {
     public class RenderComponent : IComponent
     {
         public Bitmap Image { get; set; }
-        
-        public bool Equals(IComponent other)
-        {
-            return Image.GetHashCode() == ((RenderComponent) other).Image.GetHashCode();
-        }
 
         public int NumberOfPixel
         {
             get
             {
-                int count = 0;
-                for(int i = 0; i < Image.Width; i++)
-                {
-                    for (int j = 0; j < Image.Height; j++)
-                    {
-                        if (Image.GetPixel(i, j) == Color.FromArgb(0, 0, 0))
-                        {
-                            count++;
-                        }
-                    }
-                }
+                var count = 0;
+                for (var i = 0; i < Image.Width; i++)
+                for (var j = 0; j < Image.Height; j++)
+                    if (Image.GetPixel(i, j) == Color.FromArgb(0, 0, 0))
+                        count++;
                 return count;
             }
+        }
+
+        public bool Equals(IComponent other)
+        {
+            var renderComponent = other as RenderComponent;
+            return renderComponent != null && Image.GetHashCode() == renderComponent.Image.GetHashCode();
         }
     }
 }

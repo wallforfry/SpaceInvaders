@@ -1,12 +1,13 @@
-﻿namespace SpaceInvaders
+﻿namespace SpaceInvaders.Components
 {
     public class EnemyBlockComponent : IComponent
     {
         public int FireProbability { get; set; }
-        
+
         public bool Equals(IComponent other)
         {
-            return FireProbability.GetHashCode() == ((EnemyBlockComponent) other).FireProbability.GetHashCode();
+            var enemyBlockComponent = other as EnemyBlockComponent;
+            return enemyBlockComponent != null && FireProbability.GetHashCode() == enemyBlockComponent.FireProbability.GetHashCode();
         }
     }
 }

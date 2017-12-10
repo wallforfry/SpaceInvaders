@@ -1,9 +1,11 @@
-﻿namespace SpaceInvaders.Nodes
+﻿using SpaceInvaders.Components;
+
+namespace SpaceInvaders.Nodes
 {
-    public class AIComposition : CompositionBase
+    public class AiComposition : CompositionBase
     {
         public RenderComponent Render { get; set; }
-        public PositionComponent Position { get; set; }       
+        public PositionComponent Position { get; set; }
         public PhysicsComponent Physic { get; set; }
         public LifeComponent Life { get; set; }
         public FireComponent Fire { get; set; }

@@ -1,10 +1,9 @@
-﻿using System.Data;
+﻿using SpaceInvaders.EngineFiles;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Systems
 {
     public interface IPhysicsSystem : ISystem
     {
         void Update(Engine gameEngine, double deltaT);
-        
     }
 }

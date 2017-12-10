@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace SpaceInvaders
+namespace SpaceInvaders.Components
 {
     public interface IComponent : IEquatable<IComponent>
     {
-        
     }
 }
